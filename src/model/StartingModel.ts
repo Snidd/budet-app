@@ -7,6 +7,11 @@ export interface BudgetMonth {
 export interface BudgetBasicElement {
 	total: number;
 	description: string;
+	month: number;
+}
+
+export interface BudgetTableElement extends BudgetBasicElement {
+	show: boolean;
 }
 
 export const months = [
