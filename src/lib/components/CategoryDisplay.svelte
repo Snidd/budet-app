@@ -9,29 +9,14 @@
 	import { allMonths } from '$lib/stores/allMonths';
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import ElementCell from './ElementCell.svelte';
+	import { getTotalForMonth } from '$lib/calculations/getTotalForMonth';
+	import { allCategories } from '$lib/stores/allCategories';
 	export let categoryName: string;
 	export let rows: BudgetCategoryRows[];
 	export let elements: BudgetBasicElement[];
 	export let isIncome = false;
 
 	let showDetails = false;
-
-	const getElementByRowAndMonth = (
-		elements: BudgetBasicElement[],
-		rowId: number,
-		month: number
-	): BudgetBasicElement | undefined => {
-		return elements.find((elem) => elem.rowId === rowId && elem.month === month);
-	};
-
-	const getTotalForMonth = (elements: BudgetBasicElement[], month: number): number => {
-		return elements.reduce((prev, cur) => {
-			if (cur.month === month) {
-				return prev + cur.total;
-			}
-			return prev;
-		}, 0);
-	};
 </script>
 
 <tr
@@ -76,7 +61,7 @@
 		</tr>
 	{/each}
 	<tr class="whitespace-nowrap bg-blue-100/20" transition:scale={{ duration: 100 }}>
-		<td class="{tdClasses} italic">Total</td>
+		<td class="{tdClasses} italic">{categoryName} totalt</td>
 		{#each $allMonths as month}
 			{@const total = getTotalForMonth(elements, month)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"

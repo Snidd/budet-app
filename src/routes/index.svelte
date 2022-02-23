@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CategoryDisplay from '$lib/components/CategoryDisplay.svelte';
+	import SummaryDisplay from '$lib/components/SummaryDisplay.svelte';
 	import { allCategories } from '$lib/stores/allCategories';
 	import { allCategoryRows } from '$lib/stores/allCategoryRows';
 	import { allElements, loadExampleData } from '$lib/stores/allElements';
@@ -68,6 +69,7 @@
 								isIncome={true}
 							/>
 						{/each}
+						<SummaryDisplay />
 					</tbody>
 				</table>
 			</div>
