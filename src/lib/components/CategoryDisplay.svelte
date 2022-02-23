@@ -1,10 +1,14 @@
 <script lang="ts">
 	import type { BudgetBasicElement, BudgetTableElement } from '$model/StartingModel';
-	import { element } from 'svelte/internal';
+	import StatusArrow from './StatusArrow.svelte';
+	import { fade, scale } from 'svelte/transition';
 
 	export let categoryName: string;
 	export let rows: string[];
 	export let elements: BudgetBasicElement[];
+	export let isIncome = false;
+
+	let showDetails = true;
 
 	const tdClasses = 'px-6 py-4 text-sm text-gray-500';
 
@@ -13,9 +17,9 @@
 		elements: BudgetBasicElement[]
 	): BudgetTableElement[] => {
 		const elementsMonths = getMonths(elements).map<BudgetTableElement>((month) => {
-			const curElem = elements.find((elem) => elem.month === month && elem.description === rowName);
+			const curElem = elements.find((elem) => elem.month === month && elem.name === rowName);
 			if (curElem === undefined) {
-				return { total: 0, description: '', month: month, show: false };
+				return { total: 0, description: '', month: month, show: false, categoryId: -1, name: '' };
 			}
 			return { ...curElem, show: true };
 		});
@@ -43,25 +47,59 @@
 	};
 </script>
 
-<tr class="whitespace-nowrap">
-	<td colspan="2" class="font-bold {tdClasses}">{categoryName}</td>
+<tr
+	class="whitespace-nowrap cursor-pointer hover:bg-slate-100"
+	on:click={() => (showDetails = !showDetails)}
+>
+	<td class="font-bold {tdClasses} flex"
+		><div>{categoryName}</div>
+		<img
+			src="/{showDetails ? 'collapse.svg' : 'expand_clean.svg'}"
+			alt="Unfold"
+			class="ml-2 opacity-50"
+		/>
+	</td>
+	{#if !showDetails}
+		{#each getMonths(elements) as month}
+			{@const total = getTotalForMonth(elements, month)}
+			<td
+				transition:fade={{ duration: 50 }}
+				class="{tdClasses} font-mono text-right font-semibold italic"
+				>{#if month > 0}<StatusArrow
+						currentTotal={total}
+						previousTotal={getTotalForMonth(elements, month - 1)}
+						{isIncome}
+					/>
+				{/if}{total}</td
+			>
+		{/each}
+	{:else}
+		{#each getMonths(elements) as month}
+			<td />
+		{/each}
+	{/if}
 </tr>
-{#each rows as elementName}
-	<tr class="whitespace-nowrap">
-		<td class={tdClasses}>{elementName}</td>
-		{#each getAllElementsByRow(elementName, elements) as element}
-			<td class="font-mono text-right {tdClasses}">{element.show ? element.total : ''}</td>
+{#if showDetails}
+	{#each rows as elementName}
+		<tr class="whitespace-nowrap" transition:scale={{ duration: 100 }}>
+			<td class={tdClasses}>{elementName}</td>
+			{#each getAllElementsByRow(elementName, elements) as element}
+				<td class="font-mono text-right {tdClasses}">{element.show ? element.total : ''}</td>
+			{/each}
+		</tr>
+	{/each}
+	<tr class="whitespace-nowrap bg-blue-100/20" transition:scale={{ duration: 100 }}>
+		<td class="{tdClasses} italic">Total</td>
+		{#each getMonths(elements) as month}
+			{@const total = getTotalForMonth(elements, month)}
+			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
+				>{#if month > 0}<StatusArrow
+						currentTotal={total}
+						previousTotal={getTotalForMonth(elements, month - 1)}
+						{isIncome}
+					/>
+				{/if}{total}</td
+			>
 		{/each}
 	</tr>
-{/each}
-<tr class="whitespace-nowrap bg-gray-100">
-	<td class="{tdClasses} italic">Total</td>
-	{#each getMonths(elements) as month}
-		{@const total = getTotalForMonth(elements, month)}
-		<td class="{tdClasses} bg-gray-100 font-mono text-right font-semibold italic"
-			>{#if month > 0 && total > getTotalForMonth(elements, month - 1)}
-				<span class="ml-1 text-red-500">↑</span>
-			{/if}{total}</td
-		>
-	{/each}
-</tr>
+{/if}

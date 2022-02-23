@@ -1,13 +1,8 @@
-export interface BudgetMonth {
-	month: number;
-	categories: BudgetCategory[];
-	incomes: BudgetBasicElement[];
-}
-
 export interface BudgetBasicElement {
 	total: number;
-	description: string;
+	name: string;
 	month: number;
+	categoryId: number;
 }
 
 export interface BudgetTableElement extends BudgetBasicElement {
@@ -31,7 +26,8 @@ export const months = [
 
 export interface BudgetCategory {
 	name: string;
-	elements: BudgetElement[];
+	id: number;
+	isIncome: boolean;
 }
 
 export interface BudgetElement extends BudgetBasicElement {
