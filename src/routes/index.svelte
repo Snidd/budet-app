@@ -1,37 +1,32 @@
 <script lang="ts">
 	import CategoryDisplay from '$lib/components/CategoryDisplay.svelte';
-	import { exampleData, exampleCategories } from '$lib/exampleData';
+	import { allCategories } from '$lib/stores/allCategories';
+	import { allCategoryRows } from '$lib/stores/allCategoryRows';
+	import { allElements, loadExampleData } from '$lib/stores/allElements';
+	import { allMonths } from '$lib/stores/allMonths';
 	import {
 		months,
 		type BudgetBasicElement,
 		type BudgetCategory,
+		type BudgetCategoryRows,
 		type BudgetElement
 	} from '$model/StartingModel';
 
-	function onlyUnique(value, index, self) {
-		return self.indexOf(value) === index;
-	}
+	loadExampleData();
 
-	const getAllCategories = (): BudgetCategory[] => {
-		return exampleCategories.filter((cat) => cat.isIncome === false);
+	const getAllCategories = (categories: BudgetCategory[]): BudgetCategory[] => {
+		return categories.filter((cat) => cat.isIncome === false);
 	};
 
-	const getAllIncomeCategories = (): BudgetCategory[] => {
-		return exampleCategories.filter((cat) => cat.isIncome === true);
+	const getAllIncomeCategories = (categories: BudgetCategory[]): BudgetCategory[] => {
+		return categories.filter((cat) => cat.isIncome === true);
 	};
 
-	const getAllMonths = (): number[] => {
-		return exampleData.map((elem) => elem.month).filter(onlyUnique);
-	};
-
-	const getAllElementNamesByCategory = (
-		elements: BudgetElement[],
+	const getRowsByCategory = (
+		rows: BudgetCategoryRows[],
 		categoryId: number
-	): string[] => {
-		return elements
-			.filter((elem) => elem.categoryId === categoryId)
-			.map((elem) => elem.name)
-			.filter(onlyUnique);
+	): BudgetCategoryRows[] => {
+		return rows.filter((row) => row.categoryId === categoryId);
 	};
 
 	const getAllElementsByCategory = (
@@ -52,24 +47,24 @@
 					<thead class="bg-gray-50">
 						<tr>
 							<th class="w-48 {thClasses}" />
-							{#each getAllMonths() as budgetMonth}
+							{#each $allMonths as budgetMonth}
 								<th class="{thClasses} w-24">{months[budgetMonth]}</th>
 							{/each}
 						</tr>
 					</thead>
 					<tbody class="bg-white divide-y divide-gray-300">
-						{#each getAllCategories() as category}
+						{#each getAllCategories($allCategories) as category}
 							<CategoryDisplay
 								categoryName={category.name}
-								rows={getAllElementNamesByCategory(exampleData, category.id)}
-								elements={getAllElementsByCategory(exampleData, category.id)}
+								rows={getRowsByCategory($allCategoryRows, category.id)}
+								elements={getAllElementsByCategory($allElements, category.id)}
 							/>
 						{/each}
-						{#each getAllIncomeCategories() as category}
+						{#each getAllIncomeCategories($allCategories) as category}
 							<CategoryDisplay
 								categoryName={category.name}
-								rows={getAllElementNamesByCategory(exampleData, category.id)}
-								elements={getAllElementsByCategory(exampleData, category.id)}
+								rows={getRowsByCategory($allCategoryRows, category.id)}
+								elements={getAllElementsByCategory($allElements, category.id)}
 								isIncome={true}
 							/>
 						{/each}

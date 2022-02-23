@@ -1,8 +1,8 @@
 export interface BudgetBasicElement {
 	total: number;
-	name: string;
 	month: number;
 	categoryId: number;
+	rowId: number;
 }
 
 export interface BudgetTableElement extends BudgetBasicElement {
@@ -28,6 +28,12 @@ export interface BudgetCategory {
 	name: string;
 	id: number;
 	isIncome: boolean;
+}
+
+export interface BudgetCategoryRows {
+	name: string;
+	id: number;
+	categoryId: number;
 }
 
 export interface BudgetElement extends BudgetBasicElement {
