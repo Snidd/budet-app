@@ -19,6 +19,8 @@ const getElement = (
 	);
 	if (row === undefined) {
 		row = {
+			isOnCredit: isOnCredit,
+			recurring: recurring,
 			name: name,
 			id: exampleRows.length,
 			categoryId: categoryId

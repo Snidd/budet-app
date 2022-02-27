@@ -11,6 +11,8 @@
 	import ElementCell from './ElementCell.svelte';
 	import { getTotalForMonth } from '$lib/calculations/getTotalForMonth';
 	import { allCategories } from '$lib/stores/allCategories';
+	import { selectedRow } from '$lib/stores/selectedRow';
+	import RowMenu from './RowMenu.svelte';
 	export let categoryName: string;
 	export let rows: BudgetCategoryRows[];
 	export let elements: BudgetBasicElement[];
@@ -20,7 +22,7 @@
 </script>
 
 <tr
-	class="whitespace-nowrap cursor-pointer hover:bg-slate-100"
+	class="whitespace-nowrap cursor-pointer hover:bg-slate-200"
 	on:click={() => (showDetails = !showDetails)}
 >
 	<td class="font-bold {tdClasses} flex"
@@ -53,10 +55,18 @@
 </tr>
 {#if showDetails}
 	{#each rows as row}
-		<tr class="whitespace-nowrap" transition:scale={{ duration: 100 }}>
-			<td class={tdClasses}>{row.name}</td>
+		{@const rowSelected = $selectedRow && $selectedRow.id === row.id}
+		<tr
+			on:click={() => selectedRow.set(row)}
+			class="whitespace-nowrap {rowSelected ? 'bg-gray-100' : ''}"
+			transition:scale={{ duration: 100 }}
+		>
+			<td class={tdClasses}
+				>{#if rowSelected}<RowMenu {row} />{/if}
+				{row.name}</td
+			>
 			{#each $allMonths as month}
-				<ElementCell rowId={row.id} {month} />
+				<ElementCell {row} {month} />
 			{/each}
 		</tr>
 	{/each}

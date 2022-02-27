@@ -34,6 +34,8 @@ export interface BudgetCategoryRows {
 	name: string;
 	id: number;
 	categoryId: number;
+	recurring: boolean;
+	isOnCredit: boolean;
 }
 
 export interface BudgetElement extends BudgetBasicElement {

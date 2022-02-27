@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { allElements } from '$lib/stores/allElements';
 	import { tdClasses } from '$lib/constants/tdClasses';
-	import type { BudgetElement } from '$model/StartingModel';
+	import type { BudgetCategoryRows, BudgetElement } from '$model/StartingModel';
 	import { loop_guard } from 'svelte/internal';
 
-	export let rowId: number;
+	export let row: BudgetCategoryRows;
 	export let month: number;
 
-	const element = $allElements.find((elem) => elem.rowId === rowId && elem.month === month);
+	const element = $allElements.find((elem) => elem.rowId === row.id && elem.month === month);
 
 	let isEditing = false;
 
@@ -29,8 +29,20 @@
 	const stopEditing = () => {
 		isEditing = false;
 		allElements.update((elements) => {
-			const idx = elements.findIndex((el) => el.rowId === rowId && el.month === month);
-			elements[idx].total = new Number(inputValue).valueOf();
+			const idx = elements.findIndex((el) => el.rowId === row.id && el.month === month);
+			if (idx === -1) {
+				// TODO: Create element here
+				elements.push({
+					categoryId: row.categoryId,
+					isOnCredit: false,
+					month: month,
+					recurring: true,
+					rowId: row.id,
+					total: new Number(inputValue).valueOf()
+				});
+			} else {
+				elements[idx].total = new Number(inputValue).valueOf();
+			}
 			return elements;
 		});
 		return;
@@ -46,7 +58,6 @@
 			bind:value={inputValue}
 			autofocus={true}
 			on:keypress={(event) => {
-				console.log(event.key);
 				if (event.key === 'Enter') stopEditing();
 			}}
 			on:blur={() => stopEditing()}
