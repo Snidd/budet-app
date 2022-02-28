@@ -1,10 +1,10 @@
-import type { BudgetCategoryRows, BudgetElement } from '$model/StartingModel';
+import type { BudgetCategoryRow, BudgetElement } from '$model/index';
 import { writable } from 'svelte/store';
 import { allCategoryRows } from './allCategoryRows';
 
 export const allElements = writable<BudgetElement[]>([]);
 
-const exampleRows: BudgetCategoryRows[] = [];
+const exampleRows: BudgetCategoryRow[] = [];
 
 const getElement = (
 	name: string,

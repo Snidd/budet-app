@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { BudgetCategoryRows } from '$model/StartingModel';
+	import type { BudgetCategoryRow } from '$model/BudgetCategoryRow';
 
-	export let row: BudgetCategoryRows;
+	export let row: BudgetCategoryRow;
 
 	const activeClasses =
 		'bg-blue-200 w-8 h-8 border-2 mb-2 border-blue-300 rounded-md hover:bg-blue-300 hover:border-blue-400';

@@ -1,20 +1,15 @@
 <script lang="ts">
-	import type {
-		BudgetBasicElement,
-		BudgetCategoryRows,
-		BudgetTableElement
-	} from '$model/StartingModel';
-	import StatusArrow from './StatusArrow.svelte';
-	import { fade, scale } from 'svelte/transition';
-	import { allMonths } from '$lib/stores/allMonths';
-	import { tdClasses } from '$lib/constants/tdClasses';
-	import ElementCell from './ElementCell.svelte';
 	import { getTotalForMonth } from '$lib/calculations/getTotalForMonth';
-	import { allCategories } from '$lib/stores/allCategories';
+	import { tdClasses } from '$lib/constants/tdClasses';
+	import { allMonths } from '$lib/stores/allMonths';
 	import { selectedRow } from '$lib/stores/selectedRow';
+	import type { BudgetBasicElement, BudgetCategoryRow } from '$model/index';
+	import { fade, scale } from 'svelte/transition';
+	import ElementCell from './ElementCell.svelte';
 	import RowMenu from './RowMenu.svelte';
+	import StatusArrow from './StatusArrow.svelte';
 	export let categoryName: string;
-	export let rows: BudgetCategoryRows[];
+	export let rows: BudgetCategoryRow[];
 	export let elements: BudgetBasicElement[];
 	export let isIncome = false;
 
@@ -48,7 +43,7 @@
 			>
 		{/each}
 	{:else}
-		{#each $allMonths as month}
+		{#each $allMonths as _month}
 			<td />
 		{/each}
 	{/if}

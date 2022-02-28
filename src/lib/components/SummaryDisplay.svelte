@@ -1,13 +1,10 @@
 <script lang="ts">
-	import {
-		getTotalForMonth,
-		getTotalWithIncomesForMonth
-	} from '$lib/calculations/getTotalForMonth';
-	import StatusArrow from './StatusArrow.svelte';
+	import { getTotalWithIncomesForMonth } from '$lib/calculations/getTotalForMonth';
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { allCategories } from '$lib/stores/allCategories';
 	import { allElements } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
+	import StatusArrow from './StatusArrow.svelte';
 </script>
 
 <tr class="whitespace-nowrap bg-blue-100/20">

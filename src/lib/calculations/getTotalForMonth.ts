@@ -1,4 +1,4 @@
-import type { BudgetBasicElement, BudgetCategory } from '$model/StartingModel';
+import type { BudgetBasicElement, BudgetCategory } from '$model/index';
 
 export const getTotalForMonth = (elements: BudgetBasicElement[], month: number): number => {
 	return elements.reduce((prev, cur) => {

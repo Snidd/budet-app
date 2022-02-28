@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { allElements } from '$lib/stores/allElements';
 	import { tdClasses } from '$lib/constants/tdClasses';
-	import type { BudgetCategoryRows, BudgetElement } from '$model/StartingModel';
-	import { loop_guard } from 'svelte/internal';
+	import type { BudgetCategoryRow, BudgetElement } from '$model/index';
 
-	export let row: BudgetCategoryRows;
+	export let row: BudgetCategoryRow;
 	export let month: number;
 
 	const element = $allElements.find((elem) => elem.rowId === row.id && elem.month === month);

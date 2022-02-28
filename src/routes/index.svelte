@@ -1,17 +1,17 @@
 <script lang="ts">
 	import CategoryDisplay from '$lib/components/CategoryDisplay.svelte';
 	import SummaryDisplay from '$lib/components/SummaryDisplay.svelte';
+	import { months } from '$lib/constants/months';
 	import { allCategories } from '$lib/stores/allCategories';
 	import { allCategoryRows } from '$lib/stores/allCategoryRows';
 	import { allElements, loadExampleData } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
-	import {
-		months,
-		type BudgetBasicElement,
-		type BudgetCategory,
-		type BudgetCategoryRows,
-		type BudgetElement
-	} from '$model/StartingModel';
+	import type {
+		BudgetBasicElement,
+		BudgetCategory,
+		BudgetCategoryRow,
+		BudgetElement
+	} from '$model/index';
 
 	loadExampleData();
 
@@ -24,9 +24,9 @@
 	};
 
 	const getRowsByCategory = (
-		rows: BudgetCategoryRows[],
+		rows: BudgetCategoryRow[],
 		categoryId: number
-	): BudgetCategoryRows[] => {
+	): BudgetCategoryRow[] => {
 		return rows.filter((row) => row.categoryId === categoryId);
 	};
 

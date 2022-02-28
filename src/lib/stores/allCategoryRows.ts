@@ -1,4 +1,4 @@
-import type { BudgetCategoryRows } from '$model/StartingModel';
+import type { BudgetCategoryRow } from '$model/BudgetCategoryRow';
 import { writable } from 'svelte/store';
 
-export const allCategoryRows = writable<BudgetCategoryRows[]>([]);
+export const allCategoryRows = writable<BudgetCategoryRow[]>([]);

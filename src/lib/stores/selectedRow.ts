@@ -1,3 +1,3 @@
-import type { BudgetCategoryRows } from '$model/StartingModel';
+import type { BudgetCategoryRow } from '$model/BudgetCategoryRow';
 import { writable } from 'svelte/store';
-export const selectedRow = writable<BudgetCategoryRows | null>(null);
+export const selectedRow = writable<BudgetCategoryRow | null>(null);
