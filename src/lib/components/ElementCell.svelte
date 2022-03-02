@@ -2,11 +2,12 @@
 	import { allElements } from '$lib/stores/allElements';
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import type { BudgetCategoryRow, BudgetElement } from '$model/index';
+	import { tick } from 'svelte';
 
 	export let row: BudgetCategoryRow;
 	export let month: number;
 
-	const element = $allElements.find((elem) => elem.rowId === row.id && elem.month === month);
+	$: element = $allElements.find((elem) => elem.rowId === row.id && elem.month === month);
 
 	let isEditing = false;
 
@@ -48,19 +49,21 @@
 	};
 </script>
 
-<td class="font-mono text-right {tdClasses}"
-	>{#if isEditing}
-		<!-- svelte-ignore a11y-autofocus -->
-		<input
-			type="text"
-			class="w-14 text-right outline-2 outline-dotted pr-2"
-			bind:value={inputValue}
-			autofocus={true}
-			on:keypress={(event) => {
-				if (event.key === 'Enter') stopEditing();
-			}}
-			on:blur={() => stopEditing()}
-		/>{:else}<div class="w-14" on:click={() => startEditing()}>
-			{getTotal(element)}
-		</div>{/if}</td
->
+{#key row.id}
+	<td class="font-mono text-right {tdClasses}"
+		>{#if isEditing}
+			<!-- svelte-ignore a11y-autofocus -->
+			<input
+				type="text"
+				class="w-14 text-right outline-2 outline-dotted pr-2"
+				bind:value={inputValue}
+				autofocus={true}
+				on:keypress={(event) => {
+					if (event.key === 'Enter') stopEditing();
+				}}
+				on:blur={() => stopEditing()}
+			/>{:else}<div class="w-14" on:click={() => startEditing()}>
+				{getTotal(element)}
+			</div>{/if}</td
+	>
+{/key}

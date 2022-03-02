@@ -27,7 +27,8 @@
 		rows: BudgetCategoryRow[],
 		categoryId: number
 	): BudgetCategoryRow[] => {
-		return rows.filter((row) => row.categoryId === categoryId);
+		const rowsByCategory = rows.filter((row) => row.categoryId === categoryId);
+		return rowsByCategory;
 	};
 
 	const getAllElementsByCategory = (
@@ -40,7 +41,7 @@
 	const thClasses = 'px-6 py-2 text-xs text-gray-500';
 </script>
 
-<div class="container flex justify-left mx-auto mt-8">
+<div class="container flex justify-left ml-16 mt-8">
 	<div class="flex flex-col">
 		<div class="w-full">
 			<div class="border-b border-gray-200 shadow">
@@ -56,6 +57,7 @@
 					<tbody class="bg-white divide-y divide-gray-300">
 						{#each getAllCategories($allCategories) as category}
 							<CategoryDisplay
+								categoryId={category.id}
 								categoryName={category.name}
 								rows={getRowsByCategory($allCategoryRows, category.id)}
 								elements={getAllElementsByCategory($allElements, category.id)}
@@ -63,6 +65,7 @@
 						{/each}
 						{#each getAllIncomeCategories($allCategories) as category}
 							<CategoryDisplay
+								categoryId={category.id}
 								categoryName={category.name}
 								rows={getRowsByCategory($allCategoryRows, category.id)}
 								elements={getAllElementsByCategory($allElements, category.id)}

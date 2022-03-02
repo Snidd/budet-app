@@ -9,4 +9,5 @@
 	/>
 	<title>Budget {new Date().getFullYear()}</title>
 </svelte:head>
+
 <slot />

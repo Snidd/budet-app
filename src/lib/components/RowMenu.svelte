@@ -14,7 +14,9 @@
 >
 	<input
 		class={row.isOnCredit ? activeClasses : inactiveClasses}
-		on:click={() => (row.isOnCredit = !row.isOnCredit)}
+		on:click={(event) => {
+			row.isOnCredit = !row.isOnCredit;
+		}}
 		type="image"
 		src="/credit_card.svg"
 		alt="On Credit"

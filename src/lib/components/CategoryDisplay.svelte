@@ -2,11 +2,9 @@
 	import { getTotalForMonth } from '$lib/calculations/getTotalForMonth';
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { allMonths } from '$lib/stores/allMonths';
-	import { selectedRow } from '$lib/stores/selectedRow';
 	import type { BudgetBasicElement, BudgetCategoryRow } from '$model/index';
 	import { fade, scale } from 'svelte/transition';
-	import ElementCell from './ElementCell.svelte';
-	import RowMenu from './RowMenu.svelte';
+	import CategoryRowDisplay from './CategoryRowDisplay.svelte';
 	import StatusArrow from './StatusArrow.svelte';
 	export let categoryName: string;
 	export let rows: BudgetCategoryRow[];
@@ -50,20 +48,7 @@
 </tr>
 {#if showDetails}
 	{#each rows as row}
-		{@const rowSelected = $selectedRow && $selectedRow.id === row.id}
-		<tr
-			on:click={() => selectedRow.set(row)}
-			class="whitespace-nowrap {rowSelected ? 'bg-gray-100' : ''}"
-			transition:scale={{ duration: 100 }}
-		>
-			<td class={tdClasses}
-				>{#if rowSelected}<RowMenu {row} />{/if}
-				{row.name}</td
-			>
-			{#each $allMonths as month}
-				<ElementCell {row} {month} />
-			{/each}
-		</tr>
+		<CategoryRowDisplay {row} />
 	{/each}
 	<tr class="whitespace-nowrap bg-blue-100/20" transition:scale={{ duration: 100 }}>
 		<td class="{tdClasses} italic">{categoryName} totalt</td>
