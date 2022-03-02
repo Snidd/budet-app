@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getTotalForMonth } from '$lib/calculations/getTotalForMonth';
 	import { tdClasses } from '$lib/constants/tdClasses';
+	import { allElements } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
 	import type { BudgetBasicElement, BudgetCategoryRow } from '$model/index';
 	import { fade, scale } from 'svelte/transition';
@@ -9,7 +10,19 @@
 
 	export let categoryName: string;
 	export let rows: BudgetCategoryRow[];
-	export let elements: BudgetBasicElement[];
+
+	let elements: BudgetBasicElement[];
+	const getElementsByRows = (elems: BudgetBasicElement[], filteringRows: BudgetCategoryRow[]) => {
+		if (elems) {
+			return elems.filter(
+				(elem) => filteringRows.findIndex((filterRow) => filterRow.id === elem.rowId) > -1
+			);
+		}
+		return [];
+	};
+
+	$: elements = getElementsByRows($allElements, rows);
+
 	export let isIncome = false;
 	export let isCopy = false;
 
@@ -30,13 +43,13 @@
 	</td>
 	{#if !showDetails}
 		{#each $allMonths as month}
-			{@const total = getTotalForMonth(elements, month)}
+			{@const total = getTotalForMonth(elements, rows, month)}
 			<td
 				transition:fade={{ duration: 50 }}
 				class="{tdClasses} font-mono text-right font-semibold italic"
 				>{#if month > 0}<StatusArrow
 						currentTotal={total}
-						previousTotal={getTotalForMonth(elements, month - 1)}
+						previousTotal={getTotalForMonth(elements, rows, month - 1)}
 						{isIncome}
 					/>
 				{/if}{total}</td
@@ -55,11 +68,11 @@
 	<tr class="whitespace-nowrap bg-blue-100/20" transition:scale={{ duration: 100 }}>
 		<td class="{tdClasses} italic">{categoryName} totalt</td>
 		{#each $allMonths as month}
-			{@const total = getTotalForMonth(elements, month)}
+			{@const total = getTotalForMonth(elements, rows, month)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
 				>{#if month > 0}<StatusArrow
 						currentTotal={total}
-						previousTotal={getTotalForMonth(elements, month - 1)}
+						previousTotal={getTotalForMonth(elements, rows, month - 1)}
 						{isIncome}
 					/>
 				{/if}{total}</td

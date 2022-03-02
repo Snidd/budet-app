@@ -55,7 +55,9 @@
 
 <tr
 	on:click={() => toggleSelectRow(row, rowSelected, true)}
-	class="whitespace-nowrap {isCopy ? 'bg-orange-100' : ''} group {rowSelected ? 'bg-gray-100' : ''}"
+	class="whitespace-nowrap {isCopy ? 'bg-orange-100' : ''} {row.isIncome
+		? 'bg-green-100'
+		: ''} group {rowSelected ? 'bg-gray-100' : ''}"
 	transition:scale={{ duration: 100 }}
 >
 	<td class={tdClasses}

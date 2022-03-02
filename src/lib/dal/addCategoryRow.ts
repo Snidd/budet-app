@@ -9,7 +9,8 @@ export const addCategoryRow = async (catId: number, preRowId: number) => {
 			categoryId: catId,
 			isOnCredit: false,
 			recurring: false,
-			name: 'Namnlös'
+			name: 'Namnlös',
+			isIncome: false
 		};
 		console.log(`adding row: ${newCategoryRow.id}`);
 		rows.splice(preIndex, 0, newCategoryRow);

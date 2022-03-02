@@ -1,8 +1,16 @@
-import type { BudgetBasicElement, BudgetCategory } from '$model/index';
+import type { BudgetBasicElement, BudgetCategory, BudgetCategoryRow } from '$model/index';
 
-export const getTotalForMonth = (elements: BudgetBasicElement[], month: number): number => {
+export const getTotalForMonth = (
+	elements: BudgetBasicElement[],
+	rows: BudgetCategoryRow[],
+	month: number
+): number => {
 	return elements.reduce((prev, cur) => {
 		if (cur.month === month) {
+			const row = rows.find((row) => row.id === cur.rowId);
+			if (row?.isIncome) {
+				return prev - cur.total;
+			}
 			return prev + cur.total;
 		}
 		return prev;

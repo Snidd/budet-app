@@ -2,16 +2,12 @@
 	import CategoryDisplay from '$lib/components/CategoryDisplay.svelte';
 	import SummaryDisplay from '$lib/components/SummaryDisplay.svelte';
 	import { months } from '$lib/constants/months';
+	import { rememberCategoryRow } from '$lib/constants/rememberCategoryRow';
 	import { allCategories } from '$lib/stores/allCategories';
 	import { allCategoryRows } from '$lib/stores/allCategoryRows';
-	import { allElements, loadExampleData } from '$lib/stores/allElements';
+	import { loadExampleData } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
-	import type {
-		BudgetBasicElement,
-		BudgetCategory,
-		BudgetCategoryRow,
-		BudgetElement
-	} from '$model/index';
+	import type { BudgetCategory, BudgetCategoryRow } from '$model/index';
 
 	loadExampleData();
 
@@ -32,18 +28,9 @@
 	};
 
 	const getRowsOnCredit = (rows: BudgetCategoryRow[]): BudgetCategoryRow[] => {
-		return rows.filter((row) => row.isOnCredit);
-	};
-
-	const getAllElementsOnCredit = (elements: BudgetElement[]): BudgetBasicElement[] => {
-		return elements.filter((elem) => elem.isOnCredit);
-	};
-
-	const getAllElementsByCategory = (
-		elements: BudgetElement[],
-		categoryId: number
-	): BudgetBasicElement[] => {
-		return elements.filter((elem) => elem.categoryId === categoryId);
+		const creditRows = rows.filter((row) => row.isOnCredit);
+		creditRows.push(rememberCategoryRow);
+		return creditRows;
 	};
 
 	const thClasses = 'px-6 py-2 text-xs text-gray-500';
@@ -67,13 +54,11 @@
 							<CategoryDisplay
 								categoryName={category.name}
 								rows={getRowsByCategory($allCategoryRows, category.id)}
-								elements={getAllElementsByCategory($allElements, category.id)}
 							/>
 						{/each}
 						<CategoryDisplay
 							categoryName="re:member"
 							rows={getRowsOnCredit($allCategoryRows)}
-							elements={getAllElementsOnCredit($allElements)}
 							isIncome={false}
 							isCopy={true}
 						/>
@@ -81,7 +66,6 @@
 							<CategoryDisplay
 								categoryName={category.name}
 								rows={getRowsByCategory($allCategoryRows, category.id)}
-								elements={getAllElementsByCategory($allElements, category.id)}
 								isIncome={true}
 							/>
 						{/each}

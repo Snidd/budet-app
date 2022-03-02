@@ -1,3 +1,4 @@
+import { rememberCategoryRow } from '$lib/constants/rememberCategoryRow';
 import type { BudgetCategoryRow, BudgetElement } from '$model/index';
 import { writable } from 'svelte/store';
 import { allCategoryRows } from './allCategoryRows';
@@ -23,7 +24,8 @@ const getElement = (
 			recurring: recurring,
 			name: name,
 			id: exampleRows.length,
-			categoryId: categoryId
+			categoryId: categoryId,
+			isIncome: false
 		};
 		exampleRows.push(row);
 	}
@@ -84,6 +86,31 @@ export const loadExampleData = () => {
 		// annat
 		getElement('LUS', 1500, 2, 2, true, false)
 	];
+
+	exampleData.push({
+		categoryId: rememberCategoryRow.categoryId,
+		isOnCredit: false,
+		month: 0,
+		recurring: true,
+		rowId: rememberCategoryRow.id,
+		total: 2000
+	});
+	exampleData.push({
+		categoryId: rememberCategoryRow.categoryId,
+		isOnCredit: false,
+		month: 1,
+		recurring: true,
+		rowId: rememberCategoryRow.id,
+		total: 2000
+	});
+	exampleData.push({
+		categoryId: rememberCategoryRow.categoryId,
+		isOnCredit: false,
+		month: 2,
+		recurring: true,
+		rowId: rememberCategoryRow.id,
+		total: 3500
+	});
 
 	allElements.set(exampleData);
 	allCategoryRows.set(exampleRows);

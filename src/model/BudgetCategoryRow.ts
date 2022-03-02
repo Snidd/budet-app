@@ -4,4 +4,5 @@ export interface BudgetCategoryRow {
 	categoryId: number;
 	recurring: boolean;
 	isOnCredit: boolean;
+	isIncome: boolean;
 }
