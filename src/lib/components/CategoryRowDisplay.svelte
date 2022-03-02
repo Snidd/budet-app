@@ -63,6 +63,7 @@
 			on:click|stopPropagation={() => toggleSelectRow(row, rowSelected, !rowSelected)}
 		>
 			{#if isEditingRow === row.id}
+				<!-- svelte-ignore a11y-autofocus -->
 				<input
 					autofocus={true}
 					bind:value={inputValue}
