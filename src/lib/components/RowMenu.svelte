@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { updateCategoryRow } from '$lib/dal';
+
 	import type { BudgetCategoryRow } from '$model/BudgetCategoryRow';
 
 	export let row: BudgetCategoryRow;
@@ -7,6 +9,14 @@
 		'bg-blue-200 w-8 h-8 border-2 mb-2 border-blue-300 rounded-md hover:bg-blue-300 hover:border-blue-400';
 	const inactiveClasses =
 		'bg-gray-200 w-8 h-8 border-2 mb-2 border-gray-300 rounded-md hover:border-gray-400 hover:bg-gray-300';
+
+	const toggleOnCredit = () => {
+		updateCategoryRow({ ...row, isOnCredit: !row.isOnCredit });
+	};
+
+	const toggleRecurring = () => {
+		updateCategoryRow({ ...row, recurring: !row.recurring });
+	};
 </script>
 
 <div
@@ -14,16 +24,14 @@
 >
 	<input
 		class={row.isOnCredit ? activeClasses : inactiveClasses}
-		on:click={(event) => {
-			row.isOnCredit = !row.isOnCredit;
-		}}
+		on:click={() => toggleOnCredit()}
 		type="image"
 		src="/credit_card.svg"
 		alt="On Credit"
 	/>
 	<input
 		class="p-1 {row.recurring ? activeClasses : inactiveClasses}"
-		on:click={() => (row.recurring = !row.recurring)}
+		on:click={() => toggleRecurring()}
 		type="image"
 		src="/repeat.svg"
 		alt="Recurring"

@@ -13,6 +13,7 @@
 	import RowMenu from './RowMenu.svelte';
 
 	export let row: BudgetCategoryRow;
+	export let isCopy = false;
 
 	const toggleSelectRow = async (
 		row: BudgetCategoryRow,
@@ -31,7 +32,12 @@
 
 	let rowSelected: boolean = false;
 
-	$: rowSelected = $selectedRow && $selectedRow.id === row.id;
+	const isSelected = (selRow: BudgetCategoryRow, id: number): boolean => {
+		if (isCopy) return false;
+		return selRow && selRow.id === row.id;
+	};
+
+	$: rowSelected = isSelected($selectedRow, row.id);
 
 	let isEditingRow: number | null = null;
 
@@ -49,15 +55,16 @@
 
 <tr
 	on:click={() => toggleSelectRow(row, rowSelected, true)}
-	class="whitespace-nowrap group {rowSelected ? 'bg-gray-100' : ''}"
+	class="whitespace-nowrap {isCopy ? 'bg-orange-100' : ''} group {rowSelected ? 'bg-gray-100' : ''}"
 	transition:scale={{ duration: 100 }}
 >
 	<td class={tdClasses}
-		>{#if rowSelected}<RowMenu {row} />{:else}<div
-				class="absolute group-hover:visible -mt-7 invisible"
-			>
+		>{#if rowSelected}<RowMenu {row} />{/if}
+		{#if !isCopy}
+			<div class="absolute group-hover:visible -mt-7 invisible">
 				<Button label="+ Ny rad" on:click={() => addCategoryRow(row.categoryId, row.id)} />
-			</div>{/if}
+			</div>
+		{/if}
 		<div
 			class="flex"
 			on:click|stopPropagation={() => toggleSelectRow(row, rowSelected, !rowSelected)}
@@ -79,7 +86,7 @@
 				<img
 					on:click|stopPropagation={() => toggleEditName(row)}
 					src="/edit.svg"
-					class="ml-3 mt-1 h-3 w-3 cursor-pointer hover:opacity-60"
+					class="ml-3 mt-1 h-3 w-3 group-hover:visible invisible cursor-pointer hover:opacity-60"
 					alt="Edit"
 				/>
 			{/if}

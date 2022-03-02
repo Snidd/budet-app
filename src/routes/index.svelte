@@ -31,6 +31,14 @@
 		return rowsByCategory;
 	};
 
+	const getRowsOnCredit = (rows: BudgetCategoryRow[]): BudgetCategoryRow[] => {
+		return rows.filter((row) => row.isOnCredit);
+	};
+
+	const getAllElementsOnCredit = (elements: BudgetElement[]): BudgetBasicElement[] => {
+		return elements.filter((elem) => elem.isOnCredit);
+	};
+
 	const getAllElementsByCategory = (
 		elements: BudgetElement[],
 		categoryId: number
@@ -57,15 +65,20 @@
 					<tbody class="bg-white divide-y divide-gray-300">
 						{#each getAllCategories($allCategories) as category}
 							<CategoryDisplay
-								categoryId={category.id}
 								categoryName={category.name}
 								rows={getRowsByCategory($allCategoryRows, category.id)}
 								elements={getAllElementsByCategory($allElements, category.id)}
 							/>
 						{/each}
+						<CategoryDisplay
+							categoryName="re:member"
+							rows={getRowsOnCredit($allCategoryRows)}
+							elements={getAllElementsOnCredit($allElements)}
+							isIncome={false}
+							isCopy={true}
+						/>
 						{#each getAllIncomeCategories($allCategories) as category}
 							<CategoryDisplay
-								categoryId={category.id}
 								categoryName={category.name}
 								rows={getRowsByCategory($allCategoryRows, category.id)}
 								elements={getAllElementsByCategory($allElements, category.id)}

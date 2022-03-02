@@ -6,10 +6,12 @@
 	import { fade, scale } from 'svelte/transition';
 	import CategoryRowDisplay from './CategoryRowDisplay.svelte';
 	import StatusArrow from './StatusArrow.svelte';
+
 	export let categoryName: string;
 	export let rows: BudgetCategoryRow[];
 	export let elements: BudgetBasicElement[];
 	export let isIncome = false;
+	export let isCopy = false;
 
 	let showDetails = false;
 </script>
@@ -48,7 +50,7 @@
 </tr>
 {#if showDetails}
 	{#each rows as row}
-		<CategoryRowDisplay {row} />
+		<CategoryRowDisplay {row} {isCopy} />
 	{/each}
 	<tr class="whitespace-nowrap bg-blue-100/20" transition:scale={{ duration: 100 }}>
 		<td class="{tdClasses} italic">{categoryName} totalt</td>
