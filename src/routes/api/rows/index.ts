@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 export const get: RequestHandler = async ({}) => {
 	try {
 		const uri = import.meta.env.VITE_MONGODB_URL;
-		console.log('connecting to mongodb ' + uri);
+
 		await mongoose.connect(uri);
 		console.log(`searching for category rows...`);
 		const categoryRows = await CategoryRowModel.find({});

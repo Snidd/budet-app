@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 export const get: RequestHandler<{ year: string }> = async ({ params }) => {
 	try {
 		const uri = import.meta.env.VITE_MONGODB_URL;
-		console.log('connecting to mongodb ' + uri);
+
 		await mongoose.connect(uri);
 		console.log(`searching for months...`);
 		const months = await MonthModel.find({ year: params.year }).sort('month');

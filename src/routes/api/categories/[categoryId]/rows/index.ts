@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 export const get: RequestHandler<{ categoryId: string }> = async ({ params }) => {
 	try {
 		const uri = import.meta.env.VITE_MONGODB_URL;
-		console.log('connecting to mongodb ' + uri);
+
 		await mongoose.connect(uri);
 		console.log(`searching for category rows...`);
 		const categoryRows = await CategoryRowModel.find({ categoryId: params.categoryId });
@@ -30,7 +30,7 @@ export const post: RequestHandler<{ categoryId: string }> = async ({ request, pa
 		const body = await request.json();
 
 		const uri = import.meta.env.VITE_MONGODB_URL;
-		console.log('connecting to mongodb ' + uri);
+
 		await mongoose.connect(uri);
 
 		body.categoryId = new mongoose.Types.ObjectId(params.categoryId);
