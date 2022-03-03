@@ -1,12 +1,28 @@
 <script lang="ts">
-	export let categoryId: number;
+	import { addCategoryRow } from '$lib/dal';
+	import { allCategoryRows } from '$lib/stores/allCategoryRows';
+	import type { BudgetCategory, BudgetCategoryRow } from '$model';
+
+	import Button from './Button.svelte';
+	export let row: BudgetCategoryRow | undefined = undefined;
+	export let category: BudgetCategory | undefined = undefined;
+
+	const getLastRowId = (categoryRows: BudgetCategoryRow[], categoryId: number): number => {
+		const lastRow = categoryRows.filter((row) => row.categoryId === categoryId).pop();
+		return lastRow.id;
+	};
 </script>
 
-<tr
-	class="whitespace-nowrap cursor-cell hover:bg-green-100 opacity-60 group"
-	on:click={() => console.log(categoryId)}
->
-	<td class="px-6 py-2 text-xs text-center italic" colspan={4}
-		><span class="invisible group-hover:visible">Lägg till rad...</span></td
-	>
-</tr>
+{#if row}
+	<div class="absolute group-hover:visible -mt-7 invisible">
+		<Button label="+ Ny rad" on:click={() => addCategoryRow(row.categoryId, row.id)} />
+	</div>
+{:else}
+	<div class="absolute group-hover:visible -mt-12 invisible">
+		<Button
+			label="+ Ny rad"
+			on:click={() =>
+				addCategoryRow(category.id, getLastRowId($allCategoryRows, category.id), false)}
+		/>
+	</div>
+{/if}

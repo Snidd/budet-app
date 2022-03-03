@@ -21,16 +21,14 @@
 
 	const getRowsByCategory = (
 		rows: BudgetCategoryRow[],
-		categoryId: number
+		category: BudgetCategory
 	): BudgetCategoryRow[] => {
-		const rowsByCategory = rows.filter((row) => row.categoryId === categoryId);
-		return rowsByCategory;
-	};
-
-	const getRowsOnCredit = (rows: BudgetCategoryRow[]): BudgetCategoryRow[] => {
-		const creditRows = rows.filter((row) => row.isOnCredit);
-		creditRows.push(rememberCategoryRow);
-		return creditRows;
+		let additionalRows: BudgetCategoryRow[] = [];
+		if (category.containsCreditCopies) {
+			additionalRows = rows.filter((row) => row.isOnCredit);
+		}
+		const rowsByCategory = rows.filter((row) => row.categoryId === category.id);
+		return additionalRows.concat(rowsByCategory);
 	};
 
 	const thClasses = 'px-6 py-2 text-xs text-gray-500';
@@ -52,20 +50,15 @@
 					<tbody class="bg-white divide-y divide-gray-300">
 						{#each getAllCategories($allCategories) as category}
 							<CategoryDisplay
-								categoryName={category.name}
-								rows={getRowsByCategory($allCategoryRows, category.id)}
+								{category}
+								rows={getRowsByCategory($allCategoryRows, category)}
+								isCopy={category.containsCreditCopies}
 							/>
 						{/each}
-						<CategoryDisplay
-							categoryName="re:member"
-							rows={getRowsOnCredit($allCategoryRows)}
-							isIncome={false}
-							isCopy={true}
-						/>
 						{#each getAllIncomeCategories($allCategories) as category}
 							<CategoryDisplay
-								categoryName={category.name}
-								rows={getRowsByCategory($allCategoryRows, category.id)}
+								{category}
+								rows={getRowsByCategory($allCategoryRows, category)}
 								isIncome={true}
 							/>
 						{/each}

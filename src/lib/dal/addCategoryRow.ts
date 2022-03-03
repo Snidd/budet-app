@@ -1,7 +1,7 @@
 import { allCategoryRows } from '$lib/stores/allCategoryRows';
 import type { BudgetCategoryRow } from '$model';
 
-export const addCategoryRow = async (catId: number, preRowId: number) => {
+export const addCategoryRow = async (catId: number, preRowId: number, before: boolean = true) => {
 	allCategoryRows.update((rows) => {
 		const preIndex = rows.findIndex((row) => row.id === preRowId);
 		const newCategoryRow: BudgetCategoryRow = {
@@ -13,7 +13,11 @@ export const addCategoryRow = async (catId: number, preRowId: number) => {
 			isIncome: false
 		};
 		console.log(`adding row: ${newCategoryRow.id}`);
-		rows.splice(preIndex, 0, newCategoryRow);
+		if (before) {
+			rows.splice(preIndex, 0, newCategoryRow);
+			return rows;
+		}
+		rows.splice(preIndex + 1, 0, newCategoryRow);
 		return rows;
 	});
 };

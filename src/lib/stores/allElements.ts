@@ -13,7 +13,8 @@ const getElement = (
 	month: number,
 	categoryId: number,
 	isOnCredit = false,
-	recurring = true
+	recurring = true,
+	isIncome = false
 ): BudgetElement => {
 	let row = exampleRows.find(
 		(existing) => existing.categoryId === categoryId && existing.name === name
@@ -25,7 +26,7 @@ const getElement = (
 			name: name,
 			id: exampleRows.length,
 			categoryId: categoryId,
-			isIncome: false
+			isIncome: isIncome
 		};
 		exampleRows.push(row);
 	}
@@ -84,33 +85,12 @@ export const loadExampleData = () => {
 		getElement('Pension (mikaela)', 1000, 1, 3),
 		getElement('Pension (mikaela)', 1000, 2, 3),
 		// annat
-		getElement('LUS', 1500, 2, 2, true, false)
-	];
+		getElement('LUS', 1500, 2, 2, true, false),
 
-	exampleData.push({
-		categoryId: rememberCategoryRow.categoryId,
-		isOnCredit: false,
-		month: 0,
-		recurring: true,
-		rowId: rememberCategoryRow.id,
-		total: 2000
-	});
-	exampleData.push({
-		categoryId: rememberCategoryRow.categoryId,
-		isOnCredit: false,
-		month: 1,
-		recurring: true,
-		rowId: rememberCategoryRow.id,
-		total: 2000
-	});
-	exampleData.push({
-		categoryId: rememberCategoryRow.categoryId,
-		isOnCredit: false,
-		month: 2,
-		recurring: true,
-		rowId: rememberCategoryRow.id,
-		total: 3500
-	});
+		getElement('Lägger på remember', 2000, 0, 5, false, true, true),
+		getElement('Lägger på remember', 2000, 1, 5, false, true, true),
+		getElement('Lägger på remember', 2500, 2, 5, false, true, true)
+	];
 
 	allElements.set(exampleData);
 	allCategoryRows.set(exampleRows);

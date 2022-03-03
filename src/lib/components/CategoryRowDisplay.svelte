@@ -8,6 +8,7 @@
 	import type { BudgetCategoryRow } from '$model';
 	import { tick } from 'svelte';
 	import { scale } from 'svelte/transition';
+	import AddCategoryRow from './AddCategoryRow.svelte';
 	import Button from './Button.svelte';
 	import ElementCell from './ElementCell.svelte';
 	import RowMenu from './RowMenu.svelte';
@@ -34,7 +35,7 @@
 
 	const isSelected = (selRow: BudgetCategoryRow, id: number): boolean => {
 		if (isCopy) return false;
-		return selRow && selRow.id === row.id;
+		return selRow && selRow.id === id;
 	};
 
 	$: rowSelected = isSelected($selectedRow, row.id);
@@ -63,9 +64,7 @@
 	<td class={tdClasses}
 		>{#if rowSelected}<RowMenu {row} />{/if}
 		{#if !isCopy}
-			<div class="absolute group-hover:visible -mt-7 invisible">
-				<Button label="+ Ny rad" on:click={() => addCategoryRow(row.categoryId, row.id)} />
-			</div>
+			<AddCategoryRow {row} />
 		{/if}
 		<div
 			class="flex"

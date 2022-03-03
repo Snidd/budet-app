@@ -3,12 +3,13 @@
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { allElements } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
-	import type { BudgetBasicElement, BudgetCategoryRow } from '$model/index';
+	import type { BudgetBasicElement, BudgetCategory, BudgetCategoryRow } from '$model/index';
 	import { fade, scale } from 'svelte/transition';
+	import AddCategoryRow from './AddCategoryRow.svelte';
 	import CategoryRowDisplay from './CategoryRowDisplay.svelte';
 	import StatusArrow from './StatusArrow.svelte';
 
-	export let categoryName: string;
+	export let category: BudgetCategory;
 	export let rows: BudgetCategoryRow[];
 
 	let elements: BudgetBasicElement[];
@@ -34,7 +35,7 @@
 	on:click={() => (showDetails = !showDetails)}
 >
 	<td class="font-bold {tdClasses} flex"
-		><div>{categoryName}</div>
+		><div>{category.name}</div>
 		<img
 			src="/{showDetails ? 'collapse.svg' : 'expand_clean.svg'}"
 			alt="Unfold"
@@ -65,8 +66,8 @@
 	{#each rows as row}
 		<CategoryRowDisplay {row} {isCopy} />
 	{/each}
-	<tr class="whitespace-nowrap bg-blue-100/20" transition:scale={{ duration: 100 }}>
-		<td class="{tdClasses} italic">{categoryName} totalt</td>
+	<tr class="whitespace-nowrap group bg-blue-100/20" transition:scale={{ duration: 100 }}>
+		<td class="{tdClasses} italic">{category.name} totalt<AddCategoryRow {category} /></td>
 		{#each $allMonths as month}
 			{@const total = getTotalForMonth(elements, rows, month)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
