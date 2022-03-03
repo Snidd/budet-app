@@ -31,5 +31,8 @@
     "typescript": "~4.5.4",
     "vite-tsconfig-paths": "^3.4.1"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "mongoose": "^6.2.4"
+  }
 }
