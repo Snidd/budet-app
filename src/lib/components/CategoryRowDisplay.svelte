@@ -56,10 +56,12 @@
 	};
 
 	const handleDragStart = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
+		console.log(e.currentTarget);
 		e.dataTransfer.dropEffect = 'move';
 		e.dataTransfer.setData('_id', row._id);
 		e.dataTransfer.setData('name', row.name);
 		e.dataTransfer.setData('categoryId', row.categoryId);
+		e.dataTransfer.setDragImage(thisRow, 5, 30);
 		showDragBorder = true;
 		isDragging = true;
 	};
@@ -71,6 +73,8 @@
 	const handleDragLeave = () => {
 		showDragBorder = false;
 	};
+
+	let thisRow: HTMLTableRowElement;
 
 	const handleDragDrop = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
 		e.preventDefault();
@@ -97,13 +101,13 @@
 		? 'bg-orange-100'
 		: ''} {row.isIncome ? 'bg-green-100' : ''} group {rowSelected ? 'bg-gray-100' : ''}"
 	transition:scale={{ duration: 100 }}
-	draggable="true"
 	on:dragstart={handleDragStart}
 	on:dragenter={handleDragEnter}
 	on:dragleave={handleDragLeave}
 	on:drop={handleDragDrop}
 	on:dragover={handleDragOver}
 	on:dragend={handleDragEnd}
+	bind:this={thisRow}
 >
 	<td class={tdClasses}>
 		{#if !isCopy}
@@ -125,14 +129,12 @@
 				/>
 			{:else}
 				<p class="text-center h-full">{row.name}</p>
-				{#if !isDragging}
-					<button
-						class="group-hover:visible invisible"
-						on:click|stopPropagation={() => toggleEditName(row)}
-					>
-						<Icon icon="carbon:edit" class="ml-3 mt-1 h-6 w-6 cursor-pointer hover:opacity-60" />
-					</button>
-				{/if}
+				<button
+					class="{!isDragging ? 'group-hover:visible' : ''}  invisible"
+					on:click|stopPropagation={() => toggleEditName(row)}
+				>
+					<Icon icon="carbon:edit" class="ml-3 mt-1 h-6 w-6 cursor-pointer hover:opacity-60" />
+				</button>
 			{/if}
 			{#if !isCopy && !isDragging}
 				<RowMenu {row} />
