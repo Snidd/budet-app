@@ -50,16 +50,16 @@
 	<div class="flex flex-col">
 		<div class="w-full">
 			<div class="border-b border-gray-200 shadow">
-				<table class="table-fixed divide-y divide-gray-300">
+				<table class="table-fixed border-collapse border border-gray-300">
 					<thead class="bg-gray-50">
-						<tr>
+						<tr class="border border-gray-300">
 							<th class="w-48 {thClasses}" />
 							{#each $allMonths as budgetMonth}
 								<th class="{thClasses} w-24">{monthNames[budgetMonth.month]}</th>
 							{/each}
 						</tr>
 					</thead>
-					<tbody class="bg-white divide-y divide-gray-300">
+					<tbody class="bg-white">
 						{#each getAllCategories($allCategories) as category}
 							<CategoryDisplay
 								{category}

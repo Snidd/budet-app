@@ -31,7 +31,7 @@
 </script>
 
 <tr
-	class="whitespace-nowrap cursor-pointer hover:bg-slate-200"
+	class="whitespace-nowrap cursor-pointer hover:bg-slate-200 border border-gray-300"
 	on:click={() => (showDetails = !showDetails)}
 >
 	<td class="font-bold {tdClasses} flex"

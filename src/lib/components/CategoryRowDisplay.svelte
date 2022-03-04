@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { updateCategoryRow } from '$lib/dal';
+	import Icon from '@iconify/svelte';
+	import { draggable } from '@neodrag/svelte';
+
 	import { allMonths } from '$lib/stores/allMonths';
 	import { selectedRow } from '$lib/stores/selectedRow';
 	import type { BudgetCategoryRow } from '$model';
@@ -9,6 +12,7 @@
 	import AddCategoryRow from './AddCategoryRow.svelte';
 	import ElementCell from './ElementCell.svelte';
 	import RowMenu from './RowMenu.svelte';
+	import DragRowElement from './DragRowElement.svelte';
 
 	export let row: BudgetCategoryRow;
 	export let isCopy = false;
@@ -41,6 +45,8 @@
 
 	let inputValue = row.name;
 
+	let showDragBorder = false;
+
 	const toggleEditName = async (row: BudgetCategoryRow, done = false) => {
 		if (done) {
 			updateCategoryRow({ ...row, name: inputValue });
@@ -49,23 +55,56 @@
 		}
 		isEditingRow = row._id;
 	};
+
+	const handleDragStart = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
+		e.dataTransfer.dropEffect = 'move';
+		e.dataTransfer.setData('_id', row._id);
+		e.dataTransfer.setData('name', row.name);
+		e.dataTransfer.setData('categoryId', row.categoryId);
+		showDragBorder = true;
+	};
+
+	const handleDragEnter = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
+		showDragBorder = true;
+	};
+
+	const handleDragLeave = () => {
+		showDragBorder = false;
+	};
+
+	const handleDragDrop = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
+		e.preventDefault();
+		var startRow = e.dataTransfer.getData('_id');
+		var rowName = e.dataTransfer.getData('name');
+		console.log(`${rowName} ${startRow}`);
+		showDragBorder = false;
+	};
+
+	const handleDragOver = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
+		if (e.dataTransfer.getData('categoryId') === row.categoryId) {
+			e.preventDefault();
+		}
+	};
 </script>
 
 <tr
-	on:click={() => toggleSelectRow(row, rowSelected, true)}
-	class="whitespace-nowrap {isCopy ? 'bg-orange-100' : ''} {row.isIncome
-		? 'bg-green-100'
-		: ''} group {rowSelected ? 'bg-gray-100' : ''}"
+	class="whitespace-nowrap border {showDragBorder ? 'border-blue-600' : 'border-slate-300'} {isCopy
+		? 'bg-orange-100'
+		: ''} {row.isIncome ? 'bg-green-100' : ''} group {rowSelected ? 'bg-gray-100' : ''}"
 	transition:scale={{ duration: 100 }}
+	draggable="true"
+	on:dragstart={handleDragStart}
+	on:dragenter={handleDragEnter}
+	on:dragleave={handleDragLeave}
+	on:drop={handleDragDrop}
+	on:dragover={handleDragOver}
 >
 	<td class={tdClasses}>
 		{#if !isCopy}
 			<AddCategoryRow {row} />
 		{/if}
-		<div
-			class="flex gap-2"
-			on:click|stopPropagation={() => toggleSelectRow(row, rowSelected, !rowSelected)}
-		>
+		<div class="flex justify-start items-center">
+			<DragRowElement />
 			{#if isEditingRow === row._id}
 				<!-- svelte-ignore a11y-autofocus -->
 				<input
@@ -79,19 +118,19 @@
 					type="text"
 				/>
 			{:else}
-				{row.name}
-				<img
+				<p class="text-center h-full">{row.name}</p>
+				<button
+					class="group-hover:visible invisible"
 					on:click|stopPropagation={() => toggleEditName(row)}
-					src="/edit.svg"
-					class="ml-3 mt-1 h-3 w-3 group-hover:visible invisible cursor-pointer hover:opacity-60"
-					alt="Edit"
-				/>
+				>
+					<Icon icon="carbon:edit" class="ml-3 mt-1 h-6 w-6 cursor-pointer hover:opacity-60" />
+				</button>
 			{/if}
 			{#if !isCopy}
 				<RowMenu {row} />
 			{/if}
-		</div></td
-	>
+		</div>
+	</td>
 	{#each $allMonths as month}
 		<ElementCell {row} {month} />
 	{/each}
