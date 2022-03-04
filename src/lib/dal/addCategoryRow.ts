@@ -1,23 +1,38 @@
 import { allCategoryRows } from '$lib/stores/allCategoryRows';
 import type { BudgetCategoryRow } from '$model';
 
-export const addCategoryRow = async (catId: number, preRowId: number, before: boolean = true) => {
+export const addCategoryRow = async (
+	categoryId: string,
+	preRowIndex: number | undefined,
+	before: boolean = true
+) => {
 	allCategoryRows.update((rows) => {
-		const preIndex = rows.findIndex((row) => row.id === preRowId);
+		if (preRowIndex === undefined) {
+			preRowIndex = rows.reduce((prev, cur) => {
+				if (cur.index > prev) {
+					return cur.index;
+				}
+			}, 1);
+		}
 		const newCategoryRow: BudgetCategoryRow = {
-			id: rows.length + 1,
-			categoryId: catId,
+			_id: Math.random().toString(10), // get the real ID here?
+			categoryId: categoryId,
 			isOnCredit: false,
 			recurring: false,
+			index: preRowIndex,
 			name: 'Namnlös',
 			isIncome: false
 		};
-		console.log(`adding row: ${newCategoryRow.id}`);
-		if (before) {
-			rows.splice(preIndex, 0, newCategoryRow);
-			return rows;
-		}
-		rows.splice(preIndex + 1, 0, newCategoryRow);
-		return rows;
+
+		const updatedIndexRows = rows.map((row) => {
+			if (row.index >= preRowIndex) {
+				row.index++;
+			}
+			return row;
+		});
+
+		updatedIndexRows.push(newCategoryRow);
+
+		return updatedIndexRows;
 	});
 };

@@ -1,4 +1,4 @@
-import { ElementModel } from '$lib/db/ElementModel';
+import { CategoryModel } from '$lib/db/CategoryModel';
 import type { RequestHandler } from '@sveltejs/kit';
 import mongoose from 'mongoose';
 
@@ -7,11 +7,16 @@ export const get: RequestHandler = async ({}) => {
 		const uri = import.meta.env.VITE_MONGODB_URL;
 
 		await mongoose.connect(uri);
-		console.log(`searching for elements...`);
-		const elements = await ElementModel.find({});
-		console.log(`found ${elements.length} elements...`);
+		console.log(`searching for categories...`);
+		const categories = await CategoryModel.find({});
+
 		return {
-			body: elements
+			body: {
+				categories: categories,
+				categoryRows: [],
+				elements: [],
+				months: []
+			}
 		};
 	} catch (err: any) {
 		console.log('error ' + err);

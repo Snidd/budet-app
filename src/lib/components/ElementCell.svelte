@@ -7,7 +7,7 @@
 	export let row: BudgetCategoryRow;
 	export let month: number;
 
-	$: element = $allElements.find((elem) => elem.rowId === row.id && elem.month === month);
+	$: element = $allElements.find((elem) => elem.rowId === row._id && elem.month === month);
 
 	let isEditing = false;
 
@@ -40,15 +40,13 @@
 	const stopEditing = () => {
 		isEditing = false;
 		allElements.update((elements) => {
-			const idx = elements.findIndex((el) => el.rowId === row.id && el.month === month);
+			const idx = elements.findIndex((el) => el.rowId === row._id && el.month === month);
 			if (idx === -1) {
 				// TODO: Create element here
 				elements.push({
 					categoryId: row.categoryId,
-					isOnCredit: false,
 					month: month,
-					recurring: true,
-					rowId: row.id,
+					rowId: row._id,
 					total: new Number(inputValue).valueOf()
 				});
 			} else {
@@ -60,7 +58,7 @@
 	};
 </script>
 
-{#key row.id}
+{#key row._id}
 	<td class="font-mono text-right {tdClasses}"
 		>{#if isEditing}
 			<!-- svelte-ignore a11y-autofocus -->

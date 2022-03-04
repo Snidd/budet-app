@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { tdClasses } from '$lib/constants/tdClasses';
-	import { addCategoryRow, updateCategoryRow } from '$lib/dal';
+	import { updateCategoryRow } from '$lib/dal';
 	import { allMonths } from '$lib/stores/allMonths';
-
 	import { selectedRow } from '$lib/stores/selectedRow';
-
 	import type { BudgetCategoryRow } from '$model';
 	import { tick } from 'svelte';
 	import { scale } from 'svelte/transition';
 	import AddCategoryRow from './AddCategoryRow.svelte';
-	import Button from './Button.svelte';
 	import ElementCell from './ElementCell.svelte';
 	import RowMenu from './RowMenu.svelte';
 
@@ -33,14 +30,14 @@
 
 	let rowSelected: boolean = false;
 
-	const isSelected = (selRow: BudgetCategoryRow, id: number): boolean => {
+	const isSelected = (selRow: BudgetCategoryRow, id: string): boolean => {
 		if (isCopy) return false;
-		return selRow && selRow.id === id;
+		return selRow && selRow._id === id;
 	};
 
-	$: rowSelected = isSelected($selectedRow, row.id);
+	$: rowSelected = isSelected($selectedRow, row._id);
 
-	let isEditingRow: number | null = null;
+	let isEditingRow: string | null = null;
 
 	let inputValue = row.name;
 
@@ -50,7 +47,7 @@
 			isEditingRow = null;
 			return;
 		}
-		isEditingRow = row.id;
+		isEditingRow = row._id;
 	};
 </script>
 
@@ -70,7 +67,7 @@
 			class="flex"
 			on:click|stopPropagation={() => toggleSelectRow(row, rowSelected, !rowSelected)}
 		>
-			{#if isEditingRow === row.id}
+			{#if isEditingRow === row._id}
 				<!-- svelte-ignore a11y-autofocus -->
 				<input
 					autofocus={true}

@@ -1,15 +1,52 @@
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
+
+	export const load: Load = async ({ fetch }) => {
+		const categoriesResponse = await fetch('/api/categories');
+		const categories = await categoriesResponse.json();
+
+		const categoryRowsResponse = await fetch('/api/rows');
+		const categoryRows = await categoryRowsResponse.json();
+
+		const elementsResponse = await fetch('/api/elements');
+		const elements = await elementsResponse.json();
+
+		const monthsResponse = await fetch('/api/months/2022');
+		const months = (await monthsResponse.json()) as { month: number; year: number }[];
+
+		return {
+			status: 200,
+			props: {
+				categories: categories,
+				categoryRows: categoryRows,
+				elements: elements,
+				months: months.map((month) => month.month)
+			}
+		};
+	};
+</script>
+
 <script lang="ts">
 	import CategoryDisplay from '$lib/components/CategoryDisplay.svelte';
 	import SummaryDisplay from '$lib/components/SummaryDisplay.svelte';
-	import { months } from '$lib/constants/months';
-	import { rememberCategoryRow } from '$lib/constants/rememberCategoryRow';
 	import { allCategories } from '$lib/stores/allCategories';
-	import { allCategoryRows } from '$lib/stores/allCategoryRows';
-	import { loadExampleData } from '$lib/stores/allElements';
+	import { sortedCategoryRows } from '$lib/stores/allCategoryRows';
 	import { allMonths } from '$lib/stores/allMonths';
-	import type { BudgetCategory, BudgetCategoryRow } from '$model/index';
+	import type { BudgetCategory, BudgetCategoryRow, BudgetElement } from '$model/index';
+	import { loadStores } from '$lib/stores/loadStores';
+	import { monthNames } from '$lib/constants/monthNames';
 
-	loadExampleData();
+	export let categories: BudgetCategory[];
+	export let categoryRows: BudgetCategoryRow[];
+	export let elements: BudgetElement[];
+	export let months: number[];
+
+	loadStores({
+		categories: categories,
+		categoryRows: categoryRows,
+		elements: elements,
+		months: months
+	});
 
 	const getAllCategories = (categories: BudgetCategory[]): BudgetCategory[] => {
 		return categories.filter((cat) => cat.isIncome === false);
@@ -27,9 +64,11 @@
 		if (category.containsCreditCopies) {
 			additionalRows = rows.filter((row) => row.isOnCredit);
 		}
-		const rowsByCategory = rows.filter((row) => row.categoryId === category.id);
+		const rowsByCategory = rows.filter((row) => row.categoryId === category._id);
 		return additionalRows.concat(rowsByCategory);
 	};
+
+	sortedCategoryRows;
 
 	const thClasses = 'px-6 py-2 text-xs text-gray-500';
 </script>
@@ -43,7 +82,7 @@
 						<tr>
 							<th class="w-48 {thClasses}" />
 							{#each $allMonths as budgetMonth}
-								<th class="{thClasses} w-24">{months[budgetMonth]}</th>
+								<th class="{thClasses} w-24">{monthNames[budgetMonth]}</th>
 							{/each}
 						</tr>
 					</thead>
@@ -51,14 +90,14 @@
 						{#each getAllCategories($allCategories) as category}
 							<CategoryDisplay
 								{category}
-								rows={getRowsByCategory($allCategoryRows, category)}
+								rows={getRowsByCategory($sortedCategoryRows, category)}
 								isCopy={category.containsCreditCopies}
 							/>
 						{/each}
 						{#each getAllIncomeCategories($allCategories) as category}
 							<CategoryDisplay
 								{category}
-								rows={getRowsByCategory($allCategoryRows, category)}
+								rows={getRowsByCategory($sortedCategoryRows, category)}
 								isIncome={true}
 							/>
 						{/each}

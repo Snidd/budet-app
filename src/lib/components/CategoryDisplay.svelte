@@ -3,7 +3,7 @@
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { allElements } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
-	import type { BudgetBasicElement, BudgetCategory, BudgetCategoryRow } from '$model/index';
+	import type { BudgetElement, BudgetCategory, BudgetCategoryRow } from '$model/index';
 	import { fade, scale } from 'svelte/transition';
 	import AddCategoryRow from './AddCategoryRow.svelte';
 	import CategoryRowDisplay from './CategoryRowDisplay.svelte';
@@ -12,11 +12,11 @@
 	export let category: BudgetCategory;
 	export let rows: BudgetCategoryRow[];
 
-	let elements: BudgetBasicElement[];
-	const getElementsByRows = (elems: BudgetBasicElement[], filteringRows: BudgetCategoryRow[]) => {
+	let elements: BudgetElement[];
+	const getElementsByRows = (elems: BudgetElement[], filteringRows: BudgetCategoryRow[]) => {
 		if (elems) {
 			return elems.filter(
-				(elem) => filteringRows.findIndex((filterRow) => filterRow.id === elem.rowId) > -1
+				(elem) => filteringRows.findIndex((filterRow) => filterRow._id === elem.rowId) > -1
 			);
 		}
 		return [];
@@ -67,7 +67,9 @@
 		<CategoryRowDisplay {row} {isCopy} />
 	{/each}
 	<tr class="whitespace-nowrap group bg-blue-100/20" transition:scale={{ duration: 100 }}>
-		<td class="{tdClasses} italic">{category.name} totalt<AddCategoryRow {category} /></td>
+		<td class="{tdClasses} italic"
+			>{category.name} totalt {#if !isCopy}<AddCategoryRow {category} />{/if}</td
+		>
 		{#each $allMonths as month}
 			{@const total = getTotalForMonth(elements, rows, month)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"

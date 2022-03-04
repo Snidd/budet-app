@@ -1,12 +1,10 @@
-import { rememberCategoryRow } from '$lib/constants/rememberCategoryRow';
-import type { BudgetCategoryRow, BudgetElement } from '$model/index';
+import type { BudgetElement } from '$model/index';
 import { writable } from 'svelte/store';
-import { allCategoryRows } from './allCategoryRows';
 
 export const allElements = writable<BudgetElement[]>([]);
 
-const exampleRows: BudgetCategoryRow[] = [];
-
+//const exampleRows: BudgetCategoryRow[] = [];
+/*
 const getElement = (
 	name: string,
 	total: number,
@@ -33,11 +31,9 @@ const getElement = (
 
 	return {
 		categoryId: categoryId,
-		rowId: row.id,
+		rowId: row._id,
 		month: month,
-		total: total,
-		isOnCredit: isOnCredit,
-		recurring: recurring
+		total: total
 	};
 };
 
@@ -95,3 +91,4 @@ export const loadExampleData = () => {
 	allElements.set(exampleData);
 	allCategoryRows.set(exampleRows);
 };
+*/

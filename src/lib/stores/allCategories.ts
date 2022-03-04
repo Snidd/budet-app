@@ -1,7 +1,10 @@
 import type { BudgetCategory } from '$model/BudgetCategory';
 import { writable } from 'svelte/store';
 
-export const allCategories = writable<BudgetCategory[]>([
+export const allCategories = writable<BudgetCategory[]>();
+
+/*
+[
 	{
 		id: 0,
 		isIncome: true,
@@ -38,4 +41,5 @@ export const allCategories = writable<BudgetCategory[]>([
 		containsCreditCopies: true,
 		name: 're:member'
 	}
-]);
+]
+*/

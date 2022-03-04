@@ -1,4 +1,8 @@
 import type { BudgetCategoryRow } from '$model/BudgetCategoryRow';
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
 export const allCategoryRows = writable<BudgetCategoryRow[]>([]);
+
+export const sortedCategoryRows = derived(allCategoryRows, ($allCategoryRows) => {
+	return [...$allCategoryRows].sort((a, b) => a.index - b.index);
+});

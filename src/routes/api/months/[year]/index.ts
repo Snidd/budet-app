@@ -1,5 +1,3 @@
-import { CategoryModel } from '$lib/db/CategoryModel';
-import { CategoryRowModel } from '$lib/db/CategoryRowModel';
 import { MonthModel } from '$lib/db/MonthModel';
 import type { RequestHandler } from '@sveltejs/kit';
 import mongoose from 'mongoose';

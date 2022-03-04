@@ -1,6 +1,6 @@
 export interface BudgetCategory {
 	name: string;
-	id: number;
+	_id: string;
 	isIncome: boolean;
 	containsCreditCopies: boolean;
 }

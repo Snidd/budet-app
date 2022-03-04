@@ -1,6 +1,6 @@
-import type { BudgetBasicElement } from './BudgetBasicElement';
-
-export interface BudgetElement extends BudgetBasicElement {
-	recurring: boolean;
-	isOnCredit: boolean;
+export interface BudgetElement {
+	total: number;
+	month: number;
+	categoryId: string;
+	rowId: string;
 }

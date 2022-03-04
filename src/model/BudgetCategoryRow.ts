@@ -1,7 +1,8 @@
 export interface BudgetCategoryRow {
 	name: string;
-	id: number;
-	categoryId: number;
+	_id: string;
+	index: number;
+	categoryId: string;
 	recurring: boolean;
 	isOnCredit: boolean;
 	isIncome: boolean;
