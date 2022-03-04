@@ -44,7 +44,9 @@
 	</td>
 	{#if !showDetails}
 		{#each $allMonths as month}
-			{@const total = getTotalForMonth(elements, rows, month.month)}
+			{@const total =
+				getTotalForMonth(elements, rows, month.month) +
+				getTotalForMonth(elements, rows, month.month - 1)}
 			<td
 				transition:fade={{ duration: 50 }}
 				class="{tdClasses} font-mono text-right font-semibold italic"
@@ -71,7 +73,9 @@
 			>{category.name} totalt {#if !isCopy}<AddCategoryRow {category} />{/if}</td
 		>
 		{#each $allMonths as month}
-			{@const total = getTotalForMonth(elements, rows, month.month)}
+			{@const total =
+				getTotalForMonth(elements, rows, month.month) +
+				getTotalForMonth(elements, rows, month.month - 1)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
 				>{#if month.month > 0}<StatusArrow
 						currentTotal={total}

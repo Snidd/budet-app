@@ -110,7 +110,7 @@
 	bind:this={thisRow}
 >
 	<td class={tdClasses}>
-		{#if !isCopy}
+		{#if !isCopy && !isDragging}
 			<AddCategoryRow {row} />
 		{/if}
 		<div class="flex justify-start items-center">
