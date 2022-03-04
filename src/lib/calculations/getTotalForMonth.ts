@@ -25,6 +25,9 @@ export const getTotalWithIncomesForMonth = (
 	return elements.reduce((prev, cur) => {
 		if (cur.month === month) {
 			const existingCategory = categories.find((cat) => cat._id === cur.categoryId);
+			if (existingCategory?.containsCreditCopies) {
+				return prev;
+			}
 			if (existingCategory?.isIncome) {
 				return prev + -cur.total;
 			} else {

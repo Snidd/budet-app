@@ -58,13 +58,12 @@
 		: ''} group {rowSelected ? 'bg-gray-100' : ''}"
 	transition:scale={{ duration: 100 }}
 >
-	<td class={tdClasses}
-		>{#if rowSelected}<RowMenu {row} />{/if}
+	<td class={tdClasses}>
 		{#if !isCopy}
 			<AddCategoryRow {row} />
 		{/if}
 		<div
-			class="flex"
+			class="flex gap-2"
 			on:click|stopPropagation={() => toggleSelectRow(row, rowSelected, !rowSelected)}
 		>
 			{#if isEditingRow === row._id}
@@ -87,6 +86,9 @@
 					class="ml-3 mt-1 h-3 w-3 group-hover:visible invisible cursor-pointer hover:opacity-60"
 					alt="Edit"
 				/>
+			{/if}
+			{#if !isCopy}
+				<RowMenu {row} />
 			{/if}
 		</div></td
 	>
