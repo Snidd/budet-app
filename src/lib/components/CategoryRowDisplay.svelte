@@ -133,7 +133,7 @@
 					class="{!isDragging ? 'group-hover:visible' : ''}  invisible"
 					on:click|stopPropagation={() => toggleEditName(row)}
 				>
-					<Icon icon="carbon:edit" class="ml-3 mt-1 h-6 w-6 cursor-pointer hover:opacity-60" />
+					<Icon icon="carbon:edit" class="ml-3 h-6 w-6 cursor-pointer hover:opacity-60" />
 				</button>
 			{/if}
 			{#if !isCopy && !isDragging}
