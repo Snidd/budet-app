@@ -2,8 +2,6 @@
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { updateCategoryRow } from '$lib/dal';
 	import Icon from '@iconify/svelte';
-	import { draggable } from '@neodrag/svelte';
-
 	import { allMonths } from '$lib/stores/allMonths';
 	import { selectedRow } from '$lib/stores/selectedRow';
 	import type { BudgetCategoryRow } from '$model';
@@ -46,6 +44,7 @@
 	let inputValue = row.name;
 
 	let showDragBorder = false;
+	let isDragging = false;
 
 	const toggleEditName = async (row: BudgetCategoryRow, done = false) => {
 		if (done) {
@@ -62,6 +61,7 @@
 		e.dataTransfer.setData('name', row.name);
 		e.dataTransfer.setData('categoryId', row.categoryId);
 		showDragBorder = true;
+		isDragging = true;
 	};
 
 	const handleDragEnter = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
@@ -78,6 +78,11 @@
 		var rowName = e.dataTransfer.getData('name');
 		console.log(`${rowName} ${startRow}`);
 		showDragBorder = false;
+		isDragging = false;
+	};
+
+	const handleDragEnd = () => {
+		isDragging = false;
 	};
 
 	const handleDragOver = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
@@ -98,6 +103,7 @@
 	on:dragleave={handleDragLeave}
 	on:drop={handleDragDrop}
 	on:dragover={handleDragOver}
+	on:dragend={handleDragEnd}
 >
 	<td class={tdClasses}>
 		{#if !isCopy}
@@ -119,14 +125,16 @@
 				/>
 			{:else}
 				<p class="text-center h-full">{row.name}</p>
-				<button
-					class="group-hover:visible invisible"
-					on:click|stopPropagation={() => toggleEditName(row)}
-				>
-					<Icon icon="carbon:edit" class="ml-3 mt-1 h-6 w-6 cursor-pointer hover:opacity-60" />
-				</button>
+				{#if !isDragging}
+					<button
+						class="group-hover:visible invisible"
+						on:click|stopPropagation={() => toggleEditName(row)}
+					>
+						<Icon icon="carbon:edit" class="ml-3 mt-1 h-6 w-6 cursor-pointer hover:opacity-60" />
+					</button>
+				{/if}
 			{/if}
-			{#if !isCopy}
+			{#if !isCopy && !isDragging}
 				<RowMenu {row} />
 			{/if}
 		</div>
