@@ -1,31 +1,3 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-
-	export const load: Load = async ({ fetch }) => {
-		const categoriesResponse = await fetch('/api/categories');
-		const categories = await categoriesResponse.json();
-
-		const categoryRowsResponse = await fetch('/api/rows');
-		const categoryRows = await categoryRowsResponse.json();
-
-		const elementsResponse = await fetch('/api/elements');
-		const elements = await elementsResponse.json();
-
-		const monthsResponse = await fetch('/api/months/2022');
-		const months = (await monthsResponse.json()) as { month: number; year: number }[];
-
-		return {
-			status: 200,
-			props: {
-				categories: categories,
-				categoryRows: categoryRows,
-				elements: elements,
-				months: months.map((month) => month.month)
-			}
-		};
-	};
-</script>
-
 <script lang="ts">
 	import CategoryDisplay from '$lib/components/CategoryDisplay.svelte';
 	import SummaryDisplay from '$lib/components/SummaryDisplay.svelte';
@@ -35,11 +7,12 @@
 	import type { BudgetCategory, BudgetCategoryRow, BudgetElement } from '$model/index';
 	import { loadStores } from '$lib/stores/loadStores';
 	import { monthNames } from '$lib/constants/monthNames';
+	import type { BudgetMonth } from '$model/BudgetMonth';
 
 	export let categories: BudgetCategory[];
 	export let categoryRows: BudgetCategoryRow[];
 	export let elements: BudgetElement[];
-	export let months: number[];
+	export let months: BudgetMonth[];
 
 	loadStores({
 		categories: categories,
@@ -82,7 +55,7 @@
 						<tr>
 							<th class="w-48 {thClasses}" />
 							{#each $allMonths as budgetMonth}
-								<th class="{thClasses} w-24">{monthNames[budgetMonth]}</th>
+								<th class="{thClasses} w-24">{monthNames[budgetMonth.month]}</th>
 							{/each}
 						</tr>
 					</thead>

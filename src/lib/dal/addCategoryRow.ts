@@ -14,6 +14,11 @@ export const addCategoryRow = async (
 				}
 			}, 1);
 		}
+
+		if (before) {
+			preRowIndex--;
+		}
+
 		const newCategoryRow: BudgetCategoryRow = {
 			_id: Math.random().toString(10), // get the real ID here?
 			categoryId: categoryId,

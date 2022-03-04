@@ -1,4 +1,5 @@
 import type { BudgetCategory, BudgetCategoryRow, BudgetElement } from '$model';
+import type { BudgetMonth } from '$model/BudgetMonth';
 import { allCategories } from './allCategories';
 import { allCategoryRows } from './allCategoryRows';
 import { allElements } from './allElements';
@@ -8,7 +9,7 @@ export interface LoadStoresInterface {
 	categories: BudgetCategory[];
 	categoryRows: BudgetCategoryRow[];
 	elements: BudgetElement[];
-	months: number[];
+	months: BudgetMonth[];
 }
 
 export const loadStores = (data: LoadStoresInterface) => {

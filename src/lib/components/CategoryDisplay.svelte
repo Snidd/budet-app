@@ -44,13 +44,13 @@
 	</td>
 	{#if !showDetails}
 		{#each $allMonths as month}
-			{@const total = getTotalForMonth(elements, rows, month)}
+			{@const total = getTotalForMonth(elements, rows, month.month)}
 			<td
 				transition:fade={{ duration: 50 }}
 				class="{tdClasses} font-mono text-right font-semibold italic"
-				>{#if month > 0}<StatusArrow
+				>{#if month.month > 0}<StatusArrow
 						currentTotal={total}
-						previousTotal={getTotalForMonth(elements, rows, month - 1)}
+						previousTotal={getTotalForMonth(elements, rows, month.month - 1)}
 						{isIncome}
 					/>
 				{/if}{total}</td
@@ -71,11 +71,11 @@
 			>{category.name} totalt {#if !isCopy}<AddCategoryRow {category} />{/if}</td
 		>
 		{#each $allMonths as month}
-			{@const total = getTotalForMonth(elements, rows, month)}
+			{@const total = getTotalForMonth(elements, rows, month.month)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
-				>{#if month > 0}<StatusArrow
+				>{#if month.month > 0}<StatusArrow
 						currentTotal={total}
-						previousTotal={getTotalForMonth(elements, rows, month - 1)}
+						previousTotal={getTotalForMonth(elements, rows, month.month - 1)}
 						{isIncome}
 					/>
 				{/if}{total}</td

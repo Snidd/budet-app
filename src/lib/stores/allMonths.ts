@@ -1,2 +1,3 @@
+import type { BudgetMonth } from '$model/BudgetMonth';
 import { writable } from 'svelte/store';
-export const allMonths = writable<number[]>([0, 1, 2]);
+export const allMonths = writable<BudgetMonth[]>();

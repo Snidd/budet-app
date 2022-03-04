@@ -3,11 +3,12 @@
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import type { BudgetCategoryRow, BudgetElement } from '$model/index';
 	import { onMount } from 'svelte';
+	import type { BudgetMonth } from '$model/BudgetMonth';
 
 	export let row: BudgetCategoryRow;
-	export let month: number;
+	export let month: BudgetMonth;
 
-	$: element = $allElements.find((elem) => elem.rowId === row._id && elem.month === month);
+	$: element = $allElements.find((elem) => elem.rowId === row._id && elem.month === month.month);
 
 	let isEditing = false;
 
@@ -40,12 +41,12 @@
 	const stopEditing = () => {
 		isEditing = false;
 		allElements.update((elements) => {
-			const idx = elements.findIndex((el) => el.rowId === row._id && el.month === month);
+			const idx = elements.findIndex((el) => el.rowId === row._id && el.month === month.month);
 			if (idx === -1) {
 				// TODO: Create element here
 				elements.push({
 					categoryId: row.categoryId,
-					month: month,
+					month: month.month,
 					rowId: row._id,
 					total: new Number(inputValue).valueOf()
 				});
