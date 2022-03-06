@@ -11,6 +11,8 @@
 	import ElementCell from './ElementCell.svelte';
 	import RowMenu from './RowMenu.svelte';
 	import DragRowElement from './DragRowElement.svelte';
+	import { currentDragTarget } from '$lib/stores/currentDragTarget';
+	import { updateRowIndex } from '$lib/dal/updateRowIndex';
 
 	export let row: BudgetCategoryRow;
 	export let isCopy = false;
@@ -55,37 +57,28 @@
 		isEditingRow = row._id;
 	};
 
+	$: showDragBorder = $currentDragTarget === row._id;
+
 	const handleDragStart = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
-		console.log(e.currentTarget);
 		e.dataTransfer.dropEffect = 'move';
 		e.dataTransfer.setData('_id', row._id);
-		e.dataTransfer.setData('name', row.name);
 		e.dataTransfer.setData('categoryId', row.categoryId);
 		e.dataTransfer.setDragImage(thisRow, 5, 30);
-		showDragBorder = true;
 		isDragging = true;
 	};
 
 	const handleDragEnter = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
-		showDragBorder = true;
-	};
-
-	const handleDragLeave = () => {
-		showDragBorder = false;
+		currentDragTarget.set(row._id);
 	};
 
 	let thisRow: HTMLTableRowElement;
 
 	const handleDragDrop = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
 		e.preventDefault();
-		var startRow = e.dataTransfer.getData('_id');
-		var rowName = e.dataTransfer.getData('name');
-		console.log(`${rowName} ${startRow}`);
-		showDragBorder = false;
-		isDragging = false;
-	};
-
-	const handleDragEnd = () => {
+		var startRowId = e.dataTransfer.getData('_id');
+		console.log(`updating rowIndex: ${startRowId} ${row.index}`);
+		updateRowIndex(startRowId, row.index + 1);
+		currentDragTarget.set(null);
 		isDragging = false;
 	};
 
@@ -93,6 +86,10 @@
 		if (e.dataTransfer.getData('categoryId') === row.categoryId) {
 			e.preventDefault();
 		}
+	};
+
+	const handleDragEnd = () => {
+		isDragging = false;
 	};
 </script>
 
@@ -103,10 +100,9 @@
 	transition:scale={{ duration: 100 }}
 	on:dragstart={handleDragStart}
 	on:dragenter={handleDragEnter}
-	on:dragleave={handleDragLeave}
 	on:drop={handleDragDrop}
-	on:dragover={handleDragOver}
 	on:dragend={handleDragEnd}
+	on:dragover={handleDragOver}
 	bind:this={thisRow}
 >
 	<td class={tdClasses}>
@@ -129,12 +125,6 @@
 				/>
 			{:else}
 				<p class="text-center h-full">{row.name}</p>
-				<button
-					class="{!isDragging ? 'group-hover:visible' : ''}  invisible"
-					on:click|stopPropagation={() => toggleEditName(row)}
-				>
-					<Icon icon="carbon:edit" class="ml-3 h-6 w-6 cursor-pointer hover:opacity-60" />
-				</button>
 			{/if}
 			{#if !isCopy && !isDragging}
 				<RowMenu {row} />

@@ -18,6 +18,12 @@
 		updateCategoryRow({ ...row, recurring: !row.recurring });
 	};
 </script>
+<!-- //on:click|stopPropagation={() => toggleEditName(row)} -->
+<button
+	class="group-hover:visible invisible"
+>
+<Icon icon="carbon:edit" class="ml-3 h-6 w-6 cursor-pointer hover:opacity-60" />
+</button>
 
 <button on:click={() => toggleOnCredit()}>
 	<Icon
