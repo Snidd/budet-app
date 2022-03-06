@@ -5,7 +5,6 @@
 	import { allMonths } from '$lib/stores/allMonths';
 	import { selectedRow } from '$lib/stores/selectedRow';
 	import type { BudgetCategoryRow } from '$model';
-	import { tick } from 'svelte';
 	import { scale } from 'svelte/transition';
 	import AddCategoryRow from './AddCategoryRow.svelte';
 	import ElementCell from './ElementCell.svelte';
@@ -16,21 +15,6 @@
 
 	export let row: BudgetCategoryRow;
 	export let isCopy = false;
-
-	const toggleSelectRow = async (
-		row: BudgetCategoryRow,
-		isSelected: boolean | null,
-		value: boolean
-	) => {
-		if (isSelected && !value) {
-			selectedRow.set(null);
-			await tick();
-		}
-		if (!isSelected && value) {
-			selectedRow.set(row);
-			await tick();
-		}
-	};
 
 	let rowSelected: boolean = false;
 
@@ -44,6 +28,10 @@
 	let isEditingRow: string | null = null;
 
 	let inputValue = row.name;
+	$: setInputValue(row._id);
+	const setInputValue = (_id: string) => {
+		inputValue = row.name;
+	};
 
 	let showDragBorder = false;
 	let isDragging = false;
