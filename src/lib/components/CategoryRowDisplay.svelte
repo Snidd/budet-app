@@ -47,6 +47,7 @@
 
 	let showDragBorder = false;
 	let isDragging = false;
+	let showMenu = false;
 
 	const toggleEditName = async (row: BudgetCategoryRow, done = false) => {
 		if (done) {
@@ -57,6 +58,10 @@
 		isEditingRow = row._id;
 	};
 
+	const toggleShowMenu = () => {
+		showMenu = !showMenu;
+	};
+
 	$: showDragBorder = $currentDragTarget === row._id;
 
 	const handleDragStart = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
@@ -65,6 +70,7 @@
 		e.dataTransfer.setData('categoryId', row.categoryId);
 		e.dataTransfer.setDragImage(thisRow, 5, 30);
 		isDragging = true;
+		showMenu = false;
 	};
 
 	const handleDragEnter = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
@@ -76,7 +82,6 @@
 	const handleDragDrop = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
 		e.preventDefault();
 		var startRowId = e.dataTransfer.getData('_id');
-		console.log(`updating rowIndex: ${startRowId} ${row.index}`);
 		updateRowIndex(startRowId, row.index + 1);
 		currentDragTarget.set(null);
 		isDragging = false;
@@ -107,11 +112,17 @@
 >
 	<td class={tdClasses}>
 		{#if !isCopy && !isDragging}
-			<AddCategoryRow {row} />
+			<AddCategoryRow {row} on:add={() => (showMenu = false)} />
 		{/if}
 		<div class="flex justify-start items-center">
-			<DragRowElement />
-			{#if isEditingRow === row._id}
+			{#if showMenu || isDragging}
+				<DragRowElement />
+			{/if}
+			{#if showMenu}
+				{#if !isCopy && !isDragging}
+					<RowMenu {row} on:cancel={() => toggleShowMenu()} on:edit={() => toggleEditName(row)} />
+				{/if}
+			{:else if isEditingRow === row._id}
 				<!-- svelte-ignore a11y-autofocus -->
 				<input
 					autofocus={true}
@@ -120,14 +131,16 @@
 					on:keypress={(event) => {
 						if (event.key === 'Enter') toggleEditName(row, true);
 					}}
-					class="w-full text-left outline-2 outline-dotted pr-2"
+					class="w-full text-left outline-2 outline-dotted pl-2 h-6"
 					type="text"
 				/>
 			{:else}
-				<p class="text-center h-full">{row.name}</p>
-			{/if}
-			{#if !isCopy && !isDragging}
-				<RowMenu {row} />
+				<button on:click={() => toggleShowMenu()} class="invisible group-hover:visible">
+					<Icon class="-ml-5 mr-1 w-6 h-6" icon="eva:more-horizontal-outline" />
+				</button>
+				<p class="text-center h-full cursor-text" on:click={() => toggleEditName(row)}>
+					{row.name}
+				</p>
 			{/if}
 		</div>
 	</td>

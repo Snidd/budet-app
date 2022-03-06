@@ -41,8 +41,6 @@
 		return additionalRows.concat(rowsByCategory);
 	};
 
-	sortedCategoryRows;
-
 	const thClasses = 'px-6 py-2 text-xs text-gray-500';
 </script>
 
