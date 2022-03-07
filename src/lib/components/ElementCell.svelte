@@ -23,6 +23,11 @@
 	let inputValue = -1;
 	let originalValue = -1;
 
+	$: setInputValue(row._id);
+	const setInputValue = (_id: string) => {
+		inputValue = getTotal(element);
+	};
+
 	onMount(() => {
 		inputValue = getTotal(element);
 		originalValue = getTotal(element);

@@ -123,12 +123,12 @@
 					type="text"
 				/>
 			{:else}
-				<button on:click={() => toggleShowMenu()} class="invisible group-hover:visible">
-					<Icon class="-ml-5 mr-1 w-6 h-6" icon="eva:more-horizontal-outline" />
-				</button>
-				<p class="text-center h-full cursor-text" on:click={() => toggleEditName(row)}>
+				<p class="h-full cursor-text grow text-left" on:click={() => toggleEditName(row)}>
 					{row.name}
 				</p>
+				<button on:click={() => toggleShowMenu()} class="invisible group-hover:visible">
+					<Icon class="ml-1 w-6 h-6" icon="eva:more-horizontal-outline" />
+				</button>
 			{/if}
 		</div>
 	</td>
