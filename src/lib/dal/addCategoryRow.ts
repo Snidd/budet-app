@@ -1,43 +1,57 @@
 import { allCategoryRows } from '$lib/stores/allCategoryRows';
 import type { BudgetCategoryRow } from '$model';
+import { ObjectID } from 'bson';
+import { tick } from 'svelte';
+import { updateRowIndex } from './updateRowIndex';
 
 export const addCategoryRow = async (
 	categoryId: string,
 	preRowIndex: number | undefined,
 	before: boolean = true
 ) => {
+	const id = new ObjectID();
+
+	const newCategoryRow: BudgetCategoryRow = {
+		_id: id.toString(),
+		categoryId: categoryId,
+		isOnCredit: false,
+		recurring: false,
+		index: -1,
+		name: 'Namnlös',
+		isIncome: false
+	};
+
 	allCategoryRows.update((rows) => {
 		if (preRowIndex === undefined) {
-			preRowIndex = rows.reduce((prev, cur) => {
-				if (cur.index > prev) {
-					return cur.index;
-				}
-			}, 1);
+			preRowIndex = rows
+				.filter((row) => row.categoryId === categoryId)
+				.reduce((prev, cur, idx) => {
+					console.log(idx);
+					if (cur.index > prev && cur.index !== undefined) {
+						return cur.index;
+					}
+					return prev;
+				}, 1);
 		}
+
+		console.log(`preRowIndex: ${preRowIndex}`);
 
 		if (before) {
 			preRowIndex--;
 		}
 
-		const newCategoryRow: BudgetCategoryRow = {
-			_id: Math.random().toString(10), // get the real ID here?
-			categoryId: categoryId,
-			isOnCredit: false,
-			recurring: false,
-			index: preRowIndex,
-			name: 'Namnlös',
-			isIncome: false
-		};
+		newCategoryRow.index = preRowIndex;
 
-		const updatedIndexRows = rows.map((row) => {
-			if (row.index >= preRowIndex) {
-				row.index++;
-			}
-			return row;
-		});
+		rows.push(newCategoryRow);
+		return rows;
+	});
 
-		updatedIndexRows.push(newCategoryRow);
+	await tick();
 
-		return updatedIndexRows;
+	updateRowIndex(newCategoryRow._id, newCategoryRow.index);
+
+	fetch(`/api/category/${categoryId}/row`, {
+		method: 'POST',
+		body: JSON.stringify(newCategoryRow)
 	});
 };
