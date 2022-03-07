@@ -80,7 +80,7 @@
 		{#each $allMonths as month}
 			{@const total =
 				getTotalForMonth(elements, rows, month.month) +
-				getTotalForMonth(elements, rows, month.month - 1)}
+				(category.containsCreditCopies ? getTotalForMonth(elements, rows, month.month - 1) : 0)}
 			<td
 				transition:fade={{ duration: 50 }}
 				class="{tdClasses} font-mono text-right font-semibold italic"
@@ -113,7 +113,7 @@
 		{#each $allMonths as month}
 			{@const total =
 				getTotalForMonth(elements, rows, month.month) +
-				getTotalForMonth(elements, rows, month.month - 1)}
+				(category.containsCreditCopies ? getTotalForMonth(elements, rows, month.month - 1) : 0)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
 				>{#if month.month > 0}<StatusArrow
 						currentTotal={total}
