@@ -3,4 +3,5 @@ export interface BudgetCategory {
 	_id: string;
 	isIncome: boolean;
 	containsCreditCopies: boolean;
+	index: number;
 }

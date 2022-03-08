@@ -125,7 +125,6 @@
 			{:else}
 				<p class="h-full cursor-text grow text-left" on:click={() => toggleEditName(row)}>
 					{row.name}
-					{row.index}
 				</p>
 				<button on:click={() => toggleShowMenu()} class="invisible group-hover:visible">
 					<Icon class="ml-1 w-6 h-6" icon="eva:more-horizontal-outline" />

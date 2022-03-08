@@ -9,5 +9,6 @@
 	/>
 	<title>Budget {new Date().getFullYear()}</title>
 </svelte:head>
-
-<slot />
+<div class="m-4">
+	<slot />
+</div>
