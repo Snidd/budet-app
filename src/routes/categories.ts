@@ -2,6 +2,7 @@ import { CategoryModel } from '$lib/db/CategoryModel';
 import { CategoryRowModel } from '$lib/db/CategoryRowModel';
 import { ElementModel } from '$lib/db/ElementModel';
 import { MonthModel } from '$lib/db/MonthModel';
+import { allCategories } from '$lib/stores/allCategories';
 import type { RequestHandler } from '@sveltejs/kit';
 import mongoose from 'mongoose';
 

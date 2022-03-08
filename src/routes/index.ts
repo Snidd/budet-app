@@ -11,13 +11,13 @@ export const get: RequestHandler = async ({}) => {
 
 		await mongoose.connect(uri);
 		console.log(`searching for categories...`);
-		const categories = await CategoryModel.find({});
+		const categories = await CategoryModel.find({}).sort('index');
 
 		console.log(`searching for months...`);
 		const months = await MonthModel.find({}).sort('month');
 
 		console.log(`searching for categoryRows...`);
-		const categoryRows = await CategoryRowModel.find({});
+		const categoryRows = await CategoryRowModel.find({}).sort('index');
 
 		console.log(`searching for elements...`);
 		const elements = await ElementModel.find({});
