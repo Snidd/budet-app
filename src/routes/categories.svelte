@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { BudgetCategory } from '$model';
 	import { onMount } from 'svelte';
-	import { Sortable } from 'sortablejs';
+	import Sortable from 'sortablejs';
 	import Icon from '@iconify/svelte';
 	import CategoryEditItem from '$lib/components/CategoryEditItem.svelte';
 	import Button from '$lib/components/Button.svelte';
