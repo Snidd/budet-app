@@ -37,3 +37,36 @@ export const getTotalWithIncomesForMonth = (
 		return prev;
 	}, 0);
 };
+
+// in-source test suites
+if (import.meta.vitest) {
+	const { it, expect } = import.meta.vitest;
+	it('add', () => {
+		expect(
+			getTotalWithIncomesForMonth([{ categoryId: '1', month: 1, rowId: '1', total: 10 }], [], 1)
+		).toBe(10);
+
+		expect(
+			getTotalWithIncomesForMonth(
+				[
+					{ categoryId: '1', month: 1, rowId: '1', total: 10 },
+					{ categoryId: '1', month: 2, rowId: '1', total: 10 }
+				],
+				[],
+				1
+			)
+		).toBe(10);
+
+		expect(
+			getTotalWithIncomesForMonth(
+				[
+					{ categoryId: '1', month: 2, rowId: '1', total: 10 },
+					{ categoryId: '2', month: 1, rowId: '1', total: 10 },
+					{ categoryId: '1', month: 1, rowId: '1', total: 10 }
+				],
+				[{ _id: '2', isIncome: true, containsCreditCopies: false, index: 1, name: 'Test' }],
+				1
+			)
+		).toBe(0);
+	});
+}

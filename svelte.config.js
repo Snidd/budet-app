@@ -11,7 +11,10 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		vite: {
-			plugins: [tsconfigPaths()]
+			plugins: [tsconfigPaths()],
+			test: {
+				includeSource: ['src/**/*.{js,ts}']
+			}
 		}
 	}
 };

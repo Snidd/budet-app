@@ -28,6 +28,7 @@
 		"baseUrl": ".",
 		"allowJs": true,
 		"checkJs": true,
+		"types": ["vitest/importMeta"],
 		"paths": {
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
