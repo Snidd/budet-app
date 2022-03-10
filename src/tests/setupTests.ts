@@ -50,6 +50,7 @@ const server = setupServer(...restHandlers, ...graphqlHandlers);
 
 // Start server before all tests
 beforeAll(() => {
+	import.meta.env.BASE_URL = 'http://localhost:3000';
 	if (!globalThis.fetch) {
 		// @ts-ignore
 		globalThis.fetch = fetch;

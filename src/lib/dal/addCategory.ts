@@ -21,7 +21,7 @@ export const addCategory = async (name: string) => {
 		return categories;
 	});
 
-	await fetch(new URL('/api/category', 'http://localhost:3000').toString(), {
+	await fetch(new URL('/api/category', import.meta.env.BASE_URL).toString(), {
 		method: 'POST',
 		body: JSON.stringify(newCategoryRow)
 	});
