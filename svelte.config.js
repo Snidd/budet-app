@@ -16,7 +16,10 @@ const config = {
 				'import.meta.vitest': false
 			},
 			test: {
-				includeSource: ['src/**/*.{js,ts}']
+				includeSource: ['src/**/*.{js,ts}'],
+				globals: true,
+				environment: 'jsdom',
+				setupFiles: ['src/tests/setupTests.ts']
 			}
 		}
 	}
