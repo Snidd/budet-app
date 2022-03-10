@@ -48,7 +48,6 @@
 		allElements.update((elements) => {
 			const idx = elements.findIndex((el) => el.rowId === row._id && el.month === month.month);
 			if (idx === -1) {
-				// TODO: Create element here
 				elements.push({
 					categoryId: row.categoryId,
 					month: month.month,
