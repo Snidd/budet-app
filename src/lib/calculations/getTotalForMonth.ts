@@ -41,7 +41,7 @@ export const getTotalWithIncomesForMonth = (
 // in-source test suites
 if (import.meta.vitest) {
 	const { it, expect } = import.meta.vitest;
-	it('add', () => {
+	it('can correctly get total', () => {
 		expect(
 			getTotalWithIncomesForMonth([{ categoryId: '1', month: 1, rowId: '1', total: 10 }], [], 1)
 		).toBe(10);
@@ -65,6 +65,21 @@ if (import.meta.vitest) {
 					{ categoryId: '1', month: 1, rowId: '1', total: 10 }
 				],
 				[{ _id: '2', isIncome: true, containsCreditCopies: false, index: 1, name: 'Test' }],
+				1
+			)
+		).toBe(0);
+
+		expect(
+			getTotalWithIncomesForMonth(
+				[
+					{ categoryId: '1', month: 1, rowId: '1', total: 10 },
+					{ categoryId: '2', month: 1, rowId: '1', total: 10 },
+					{ categoryId: '3', month: 1, rowId: '1', total: 10 }
+				],
+				[
+					{ _id: '2', isIncome: true, containsCreditCopies: false, index: 1, name: 'Test' },
+					{ _id: '3', isIncome: true, containsCreditCopies: true, index: 2, name: 'Test' }
+				],
 				1
 			)
 		).toBe(0);
