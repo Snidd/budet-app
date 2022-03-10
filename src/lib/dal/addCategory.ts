@@ -1,6 +1,7 @@
 import { allCategories } from '$lib/stores/allCategories';
 import type { BudgetCategory } from '$model';
 import { ObjectID } from 'bson';
+import { get } from 'svelte/store';
 
 export const addCategory = async (name: string) => {
 	const id = new ObjectID();
@@ -25,3 +26,16 @@ export const addCategory = async (name: string) => {
 		body: JSON.stringify(newCategoryRow)
 	});
 };
+
+// in-source test suites
+if (import.meta.vitest) {
+	const { it, expect, describe } = import.meta.vitest;
+	describe('adding categories in source', () => {
+		it('should add a category when called', async () => {
+			await addCategory('test');
+			const val = get(allCategories);
+			expect(val.length).toBe(1);
+			expect(val[0].name).toBe('test');
+		});
+	});
+}
