@@ -12,6 +12,9 @@ const config = {
 		adapter: adapter(),
 		vite: {
 			plugins: [tsconfigPaths()],
+			define: {
+				'import.meta.vitest': false
+			},
 			test: {
 				includeSource: ['src/**/*.{js,ts}']
 			}
