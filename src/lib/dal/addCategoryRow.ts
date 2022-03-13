@@ -29,7 +29,6 @@ export const addCategoryRow = async (
 			preRowIndex = rows
 				.filter((row) => row.categoryId === categoryId)
 				.reduce((prev, cur, idx) => {
-					console.log(idx);
 					if (cur.index > prev && cur.index !== undefined) {
 						return cur.index;
 					}
