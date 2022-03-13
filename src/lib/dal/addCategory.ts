@@ -1,3 +1,4 @@
+import fetchApi from '$lib/fetchApi';
 import { allCategories } from '$lib/stores/allCategories';
 import type { BudgetCategory } from '$model';
 import { ObjectID } from 'bson';
@@ -21,7 +22,7 @@ export const addCategory = async (name: string) => {
 		return categories;
 	});
 
-	await fetch(new URL('/api/category', import.meta.env.BASE_URL).toString(), {
+	await fetchApi('/api/category', {
 		method: 'POST',
 		body: JSON.stringify(newCategoryRow)
 	});
@@ -29,9 +30,10 @@ export const addCategory = async (name: string) => {
 
 // in-source test suites
 if (import.meta.vitest) {
-	const { it, expect, describe } = import.meta.vitest;
+	const { it, expect, describe, vi } = import.meta.vitest;
 	describe('adding categories in source', () => {
 		it('should add a category when called', async () => {
+			vi.mock('$lib/fetchApi');
 			await addCategory('test');
 			const val = get(allCategories);
 			expect(val.length).toBe(1);
