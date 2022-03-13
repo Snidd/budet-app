@@ -33,7 +33,6 @@ if (import.meta.vitest) {
 	const { it, expect, describe, vi } = import.meta.vitest;
 	describe('adding categories in source', () => {
 		it('should add a category when called', async () => {
-			vi.mock('$lib/fetchApi');
 			await addCategory('test');
 			const val = get(allCategories);
 			expect(val.length).toBe(1);
