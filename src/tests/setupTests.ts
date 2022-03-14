@@ -13,4 +13,5 @@ beforeEach(() => {
 	allCategories.set(undefined);
 	allCategoryRows.set(undefined);
 	allElements.set(undefined);
+	allMonths.set(undefined);
 });
