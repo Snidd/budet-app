@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { BudgetCategory } from '$model';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import Sortable from 'sortablejs';
 	import Icon from '@iconify/svelte';
 	import CategoryEditItem from '$lib/components/CategoryEditItem.svelte';
@@ -19,6 +19,7 @@
 	let test: Sortable.Options;
 
 	let list;
+	let _sortable: Sortable;
 
 	onMount(() => {
 		const options: Sortable.Options = {
@@ -30,7 +31,13 @@
 			},
 			handle: '.cursor-grab'
 		};
-		const _sortable: Sortable = Sortable.create(list, options);
+		_sortable = Sortable.create(list, options);
+	});
+
+	onDestroy(() => {
+		if (_sortable) {
+			_sortable.destroy();
+		}
 	});
 </script>
 

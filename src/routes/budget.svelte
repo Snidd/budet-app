@@ -8,6 +8,7 @@
 	import { loadStores } from '$lib/stores/loadStores';
 	import { monthNames } from '$lib/constants/monthNames';
 	import type { BudgetMonth } from '$model/BudgetMonth';
+	import { onDestroy } from 'svelte';
 
 	export let categories: BudgetCategory[];
 	export let categoryRows: BudgetCategoryRow[];
@@ -41,41 +42,37 @@
 		return additionalRows.concat(rowsByCategory);
 	};
 
+	onDestroy(() => {
+		console.log('Destroy budget!');
+	});
+
 	const thClasses = 'px-6 py-2 text-xs text-gray-500';
 </script>
 
-<div class="container flex justify-left ml-16 mt-8">
-	<div class="flex flex-col">
-		<div class="w-full">
-			<div class="border-b border-gray-200 shadow">
-				<table class="table-fixed border-collapse border border-gray-300">
-					<thead class="bg-gray-50">
-						<tr class="border border-gray-300">
-							<th class="w-48 {thClasses}" />
-							{#each $allMonths as budgetMonth}
-								<th class="{thClasses} w-24">{monthNames[budgetMonth.month]}</th>
-							{/each}
-						</tr>
-					</thead>
-					<tbody class="bg-white">
-						{#each getAllCategories($allCategories) as category}
-							<CategoryDisplay
-								{category}
-								rows={getRowsByCategory($sortedCategoryRows, category)}
-								isCopy={category.containsCreditCopies}
-							/>
-						{/each}
-						{#each getAllIncomeCategories($allCategories) as category}
-							<CategoryDisplay
-								{category}
-								rows={getRowsByCategory($sortedCategoryRows, category)}
-								isIncome={true}
-							/>
-						{/each}
-						<SummaryDisplay />
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
+<table class="table-fixed border-collapse border border-gray-300">
+	<thead class="bg-gray-50">
+		<tr class="border border-gray-300">
+			<th class="w-48 {thClasses}" />
+			{#each $allMonths as budgetMonth}
+				<th class="{thClasses} w-24">{monthNames[budgetMonth.month]}</th>
+			{/each}
+		</tr>
+	</thead>
+	<tbody class="bg-white">
+		{#each getAllCategories($allCategories) as category}
+			<CategoryDisplay
+				{category}
+				rows={getRowsByCategory($sortedCategoryRows, category)}
+				isCopy={category.containsCreditCopies}
+			/>
+		{/each}
+		{#each getAllIncomeCategories($allCategories) as category}
+			<CategoryDisplay
+				{category}
+				rows={getRowsByCategory($sortedCategoryRows, category)}
+				isIncome={true}
+			/>
+		{/each}
+		<SummaryDisplay />
+	</tbody>
+</table>

@@ -36,8 +36,8 @@ dependencies:
 
 devDependencies:
   '@iconify/svelte': 2.1.2
-  '@sveltejs/adapter-auto': 1.0.0-next.31
-  '@sveltejs/kit': 1.0.0-next.295_svelte@3.46.4
+  '@sveltejs/adapter-auto': 1.0.0-next.32
+  '@sveltejs/kit': 1.0.0-next.296_svelte@3.46.4
   '@types/sortablejs': 1.10.7
   '@typescript-eslint/eslint-plugin': 5.12.1_78ba2542c270c83b2a80bb1c125195b6
   '@typescript-eslint/parser': 5.12.1_eslint@7.32.0+typescript@4.5.5
@@ -159,8 +159,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-auto/1.0.0-next.31:
-    resolution: {integrity: sha512-N1ZFGxulcSAOJrtdFR567diwbWKUvLrHZiUE9TiEvIahnndeRa50MF9LDg/CuIvpa6fHqz5K827XXrADlPAr9g==}
+  /@sveltejs/adapter-auto/1.0.0-next.32:
+    resolution: {integrity: sha512-dfJKBMHBCBbGfSbwJIXqBRzp+bOu2pv/jq7jeNfaESVRdLEgYh0eEtF/gfOMp7fIcDHjLEzZ2ZymG7AWsO9Wjg==}
     dependencies:
       '@sveltejs/adapter-cloudflare': 1.0.0-next.15
       '@sveltejs/adapter-netlify': 1.0.0-next.50
@@ -187,8 +187,8 @@ packages:
       esbuild: 0.14.23
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.295_svelte@3.46.4:
-    resolution: {integrity: sha512-4pO/swXByhU+7bhNikTjh1d4QxAMP9TZ74p7sdPuyJf5cg7Zrfk1nBtaMt0R+8+5j1xfC/XWRcxa3WnhT9bQMA==}
+  /@sveltejs/kit/1.0.0-next.296_svelte@3.46.4:
+    resolution: {integrity: sha512-mZM3vYSg1VPpgL2QHa+My+KviOuSgP4e5JRO9/T/5XLe3o2tsrRnSpjuzZeVdcY3B4+OrUb5JV7B1UPkHISrLA==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:

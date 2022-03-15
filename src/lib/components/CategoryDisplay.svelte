@@ -6,6 +6,7 @@
 	import { allMonths } from '$lib/stores/allMonths';
 	import { currentDragTarget } from '$lib/stores/currentDragTarget';
 	import type { BudgetElement, BudgetCategory, BudgetCategoryRow } from '$model/index';
+	import { onDestroy } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 	import AddCategoryRow from './AddCategoryRow.svelte';
 	import CategoryRowDisplay from './CategoryRowDisplay.svelte';
@@ -56,6 +57,10 @@
 		updateRowIndex(startRowId, 1);
 		currentDragTarget.set(null);
 	};
+
+	onDestroy(() => {
+		console.log('Destroy me!');
+	});
 </script>
 
 <tr
