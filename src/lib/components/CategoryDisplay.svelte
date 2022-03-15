@@ -57,10 +57,6 @@
 		updateRowIndex(startRowId, 1);
 		currentDragTarget.set(null);
 	};
-
-	onDestroy(() => {
-		console.log('Destroy me!');
-	});
 </script>
 
 <tr
