@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { allElements } from '$lib/stores/allElements';
+	import { allElements } from '$lib/stores';
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import type { BudgetCategoryRow, BudgetElement } from '$model/index';
 	import { onMount } from 'svelte';
 	import type { BudgetMonth } from '$model/BudgetMonth';
+	import { updateElement } from '$lib/dal/updateElement';
 
 	export let row: BudgetCategoryRow;
 	export let month: BudgetMonth;
@@ -45,20 +46,7 @@
 
 	const stopEditing = () => {
 		isEditing = false;
-		allElements.update((elements) => {
-			const idx = elements.findIndex((el) => el.rowId === row._id && el.month === month.month);
-			if (idx === -1) {
-				elements.push({
-					categoryId: row.categoryId,
-					month: month.month,
-					rowId: row._id,
-					total: new Number(inputValue).valueOf()
-				});
-			} else {
-				elements[idx].total = new Number(inputValue).valueOf();
-			}
-			return elements;
-		});
+		updateElement(new Number(inputValue).valueOf(), row._id, month.month);
 		return;
 	};
 </script>
