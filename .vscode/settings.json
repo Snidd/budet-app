@@ -1,3 +1,8 @@
 {
-	"exportall.config.folderListener": ["src/lib/components", "src/model", "src/stores"]
+	"exportall.config.folderListener": [
+		"src/lib/components",
+		"src/model",
+		"src/stores",
+		"/src/lib/stores"
+	]
 }

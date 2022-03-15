@@ -6,4 +6,5 @@
 	<a class={aClasses} href="/">Start</a>
 	<a class={aClasses} sveltekit:prefetch href="/budget">Budget</a>
 	<a class={aClasses} sveltekit:prefetch href="/categories">Kategorier</a>
+	<a class={aClasses} sveltekit:prefetch href="/invoices">Klarna</a>
 </div>
