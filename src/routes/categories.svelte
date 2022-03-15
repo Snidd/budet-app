@@ -12,11 +12,13 @@
 
 	export let categories: BudgetCategory[];
 
-	loadStores({
-		categories: categories
+	onMount(() => {
+		if ($allCategories && $allCategories.length === 0) {
+			loadStores({
+				categories: categories
+			});
+		}
 	});
-
-	let test: Sortable.Options;
 
 	let list;
 	let _sortable: Sortable;

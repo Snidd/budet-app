@@ -15,11 +15,11 @@
 	const marginWidth = 'ml-2';
 
 	const toggleOnCredit = () => {
-		updateCategoryRow({ ...row, isOnCredit: !row.isOnCredit });
+		updateCategoryRow(row._id, { isOnCredit: !row.isOnCredit });
 	};
 
 	const toggleRecurring = () => {
-		updateCategoryRow({ ...row, recurring: !row.recurring });
+		updateCategoryRow(row._id, { recurring: !row.recurring });
 	};
 </script>
 

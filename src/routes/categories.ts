@@ -11,7 +11,6 @@ export const get: RequestHandler = async ({}) => {
 		const uri = import.meta.env.VITE_MONGODB_URL;
 
 		await mongoose.connect(uri);
-		console.log(`searching for categories...`);
 		const categories = await CategoryModel.find({}).sort('index');
 
 		return {

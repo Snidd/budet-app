@@ -10,16 +10,10 @@ export const get: RequestHandler = async ({}) => {
 		const uri = import.meta.env.VITE_MONGODB_URL;
 
 		await mongoose.connect(uri);
-		console.log(`searching for categories...`);
+
 		const categories = await CategoryModel.find({}).sort('index');
-
-		console.log(`searching for months...`);
 		const months = await MonthModel.find({}).sort('month');
-
-		console.log(`searching for categoryRows...`);
 		const categoryRows = await CategoryRowModel.find({}).sort('index');
-
-		console.log(`searching for elements...`);
 		const elements = await ElementModel.find({});
 
 		return {

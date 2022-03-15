@@ -1,45 +1,12 @@
 import type { BudgetCategory } from '$model/BudgetCategory';
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
-export const allCategories = writable<BudgetCategory[]>();
+export const allCategories = writable<BudgetCategory[]>([]);
 
-/*
-[
-	{
-		id: 0,
-		isIncome: true,
-		name: 'Inkomster',
-		containsCreditCopies: false
-	},
-	{
-		id: 1,
-		isIncome: false,
-		name: 'Boende',
-		containsCreditCopies: false
-	},
-	{
-		id: 2,
-		isIncome: false,
-		name: 'Mat',
-		containsCreditCopies: false
-	},
-	{
-		id: 3,
-		isIncome: false,
-		name: 'Spar',
-		containsCreditCopies: false
-	},
-	{
-		id: 4,
-		isIncome: false,
-		name: 'Magnus',
-		containsCreditCopies: false
-	},
-	{
-		id: 5,
-		isIncome: false,
-		containsCreditCopies: true,
-		name: 're:member'
-	}
-]
-*/
+export const allNormalCategories = derived(allCategories, (categories) => {
+	return categories.filter((cat) => cat.isIncome === false);
+});
+
+export const allIncomeCategories = derived(allCategories, (categories) => {
+	return categories.filter((cat) => cat.isIncome === true);
+});

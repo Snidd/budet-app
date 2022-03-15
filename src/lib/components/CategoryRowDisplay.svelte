@@ -39,7 +39,7 @@
 
 	const toggleEditName = async (row: BudgetCategoryRow, done = false) => {
 		if (done) {
-			updateCategoryRow({ ...row, name: inputValue });
+			updateCategoryRow(row._id, { name: inputValue });
 			isEditingRow = null;
 			return;
 		}
@@ -119,7 +119,7 @@
 					on:keypress={(event) => {
 						if (event.key === 'Enter') toggleEditName(row, true);
 					}}
-					class="w-full text-left outline-2 outline-dotted pl-2 h-6"
+					class="w-full text-left outline-2 outline-dotted h-6"
 					type="text"
 				/>
 			{:else}

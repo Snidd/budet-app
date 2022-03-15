@@ -69,7 +69,7 @@
 			<!-- svelte-ignore a11y-autofocus -->
 			<input
 				type="text"
-				class="w-full text-right outline-2 outline-dotted pr-2"
+				class="w-full text-right outline-2 outline-dotted"
 				bind:value={inputValue}
 				autofocus={true}
 				on:keypress={(event) => {

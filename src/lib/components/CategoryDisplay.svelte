@@ -2,6 +2,7 @@
 	import { getTotalForMonth } from '$lib/calculations/getTotalForMonth';
 	import { tdClasses } from '$lib/constants/tdClasses';
 	import { updateRowIndex } from '$lib/dal/updateRowIndex';
+	import { rowsByCategory } from '$lib/stores';
 	import { allElements } from '$lib/stores/allElements';
 	import { allMonths } from '$lib/stores/allMonths';
 	import { currentDragTarget } from '$lib/stores/currentDragTarget';
@@ -13,7 +14,7 @@
 	import StatusArrow from './StatusArrow.svelte';
 
 	export let category: BudgetCategory;
-	export let rows: BudgetCategoryRow[];
+	const rows = rowsByCategory(category);
 
 	let elements: BudgetElement[];
 	const getElementsByRows = (elems: BudgetElement[], filteringRows: BudgetCategoryRow[]) => {
@@ -25,7 +26,7 @@
 		return [];
 	};
 
-	$: elements = getElementsByRows($allElements, rows);
+	$: elements = getElementsByRows($allElements, $rows);
 
 	export let isIncome = false;
 	export let isCopy = false;
@@ -80,14 +81,14 @@
 	{#if !showDetails}
 		{#each $allMonths as month}
 			{@const total =
-				getTotalForMonth(elements, rows, month.month) +
-				(category.containsCreditCopies ? getTotalForMonth(elements, rows, month.month - 1) : 0)}
+				getTotalForMonth(elements, $rows, month.month) +
+				(category.containsCreditCopies ? getTotalForMonth(elements, $rows, month.month - 1) : 0)}
 			<td
 				transition:fade={{ duration: 50 }}
 				class="{tdClasses} font-mono text-right font-semibold italic"
 				>{#if month.month > 0}<StatusArrow
 						currentTotal={total}
-						previousTotal={getTotalForMonth(elements, rows, month.month - 1)}
+						previousTotal={getTotalForMonth(elements, $rows, month.month - 1)}
 						{isIncome}
 					/>
 				{/if}{total}</td
@@ -100,7 +101,7 @@
 	{/if}
 </tr>
 {#if showDetails && rows}
-	{#each rows.sort((a, b) => a.index - b.index) as row}
+	{#each $rows.sort((a, b) => a.index - b.index) as row}
 		<CategoryRowDisplay {row} {isCopy} />
 	{/each}
 	<tr
@@ -113,12 +114,12 @@
 		>
 		{#each $allMonths as month}
 			{@const total =
-				getTotalForMonth(elements, rows, month.month) +
-				(category.containsCreditCopies ? getTotalForMonth(elements, rows, month.month - 1) : 0)}
+				getTotalForMonth(elements, $rows, month.month) +
+				(category.containsCreditCopies ? getTotalForMonth(elements, $rows, month.month - 1) : 0)}
 			<td class="{tdClasses} bg-blue-100/15 font-mono text-right font-semibold italic"
 				>{#if month.month > 0}<StatusArrow
 						currentTotal={total}
-						previousTotal={getTotalForMonth(elements, rows, month.month - 1)}
+						previousTotal={getTotalForMonth(elements, $rows, month.month - 1)}
 						{isIncome}
 					/>
 				{/if}{total}</td
