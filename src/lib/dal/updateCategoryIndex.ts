@@ -1,9 +1,9 @@
 import { allCategories } from '$lib/stores/allCategories';
 
-export const updateCategoryIndex = (rowId: string, index: number) => {
+export const updateCategoryIndex = (categoryId: string, index: number) => {
 	allCategories.update((categories) => {
 		const updatedIndexRows = categories.map((_cat, _index) => {
-			if (_cat._id === rowId) {
+			if (_cat._id === categoryId) {
 				_cat.index = index;
 				fetch(`/api/category/${_cat._id}`, {
 					method: 'PUT',

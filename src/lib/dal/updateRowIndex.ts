@@ -7,6 +7,10 @@ export const updateRowIndex = (rowId: string, index: number) => {
 		const updatedIndexRows = rows.map((_row) => {
 			if (_row._id === rowId) {
 				_row.index = index;
+				fetchApi(`/api/row/${_row._id}`, {
+					method: 'PUT',
+					body: JSON.stringify({ index: _row.index })
+				});
 			} else {
 				if (_row.index >= index) {
 					_row.index++;

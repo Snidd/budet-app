@@ -70,7 +70,7 @@
 	const handleDragDrop = (e: DragEvent & { currentTarget: EventTarget & HTMLTableRowElement }) => {
 		e.preventDefault();
 		var startRowId = e.dataTransfer.getData('_id');
-		updateRowIndex(startRowId, row.index + 1);
+		updateRowIndex(startRowId, row.index);
 		currentDragTarget.set(null);
 		isDragging = false;
 	};
