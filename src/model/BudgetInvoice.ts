@@ -6,4 +6,5 @@ export interface BudgetInvoice {
 	done: boolean;
 	createdAt: Date;
 	updatedAt: Date;
+	new?: boolean;
 }

@@ -13,7 +13,8 @@ export const addInvoice = async (text: string) => {
 		total: 0,
 		done: false,
 		createdAt: new Date(),
-		updatedAt: new Date()
+		updatedAt: new Date(),
+		new: true
 	};
 
 	allInvoices.update((invoices) => {
